@@ -9,13 +9,16 @@ import android.widget.TextView;
 import com.mzeat.model.MyOrderItem;
 import com.mzeat.model.My_share;
 import com.mzeat.model.U_commentlist_item;
+import com.mzeat.util.SmileyParser;
 
 public class My_shareAdapter extends
 		GenerateListViewWithImagesBaseAdapter<My_share> {
-
+			SmileyParser parser ;
 	public My_shareAdapter(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
+		SmileyParser.init(context);	
+		 parser = SmileyParser.getInstance();
 	}
 
 	
@@ -38,7 +41,7 @@ public class My_shareAdapter extends
 		if (null == item)
 			return;
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		holder.content.setText(item.getContent());
+		holder.content.setText(parser.addSmileySpans(item.getContent()));
 
 	}
 

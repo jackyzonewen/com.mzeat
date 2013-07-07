@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-
-
-
 import com.mzeat.AppException;
 import com.mzeat.MzeatApplication;
 import com.mzeat.PreferencesConfig;
 import com.mzeat.R;
 import com.mzeat.UIHelper;
+import com.mzeat.api.MsgService;
+import com.mzeat.db.My_shareDb;
+import com.mzeat.db.U_commentlist_itemDb;
 import com.mzeat.db.UserDb;
 import com.mzeat.image.BitmapManager;
 import com.mzeat.model.EditUserFace;
@@ -61,7 +60,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 	private User user = new User();
 	private UserDb mUserDb = new UserDb(MycountActivity.this);;
 	// private int fromlogin;
-	private BitmapManager 				bmpManager;
+	private BitmapManager bmpManager;
 	private TextView name;
 	private TextView balance;
 	private TextView jifen;
@@ -79,26 +78,28 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 	private NetworkChange networkChange;
 	private boolean reflash = false;
 	private ImageButton edit;
-	
+
 	private SigninTask mSigninTask;
-	
+
 	private final static String FILE_SAVEPATH = Environment
 			.getExternalStorageDirectory().getAbsolutePath()
 			+ "/MZEAT/Portrait/";
-	
+
 	private Uri origUri;
 	private Uri cropUri;
 	private File protraitFile;
 	private Bitmap protraitBitmap;
 	private String protraitPath;
 	private final static int CROP = 200;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		LogUtil.getLogOnStart(TAG);
+		// LogUtil.getLogOnStart(TAG);
 		setContentView(R.layout.activity_mycount);
-		this.bmpManager = new BitmapManager(BitmapFactory.decodeResource(this.getResources(), R.drawable.empty_image));
+		this.bmpManager = new BitmapManager(BitmapFactory.decodeResource(
+				this.getResources(), R.drawable.empty_image));
 
 		// Log.e("MycountActivity", user.getUid());
 		initView();
@@ -120,8 +121,8 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 
 		edit = (ImageButton) findViewById(R.id.edit);
 		edit.setOnClickListener(this);
-		
-		rl_myorder =  (RelativeLayout) findViewById(R.id.rl_myorder);
+
+		rl_myorder = (RelativeLayout) findViewById(R.id.rl_myorder);
 		rl_myorder.setOnClickListener(this);
 		img_user.setOnClickListener(editerClickListener);
 
@@ -132,13 +133,13 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		name.setText(user.getUser_name());
 		balance.setText(user.getUser_money_format());
 
-		
 		if (user.getUser_avatar().equals("")) {
 			img_user.setImageResource(R.drawable.empty_image);
 		} else {
-			
-			bmpManager.loadBitmap(user.getUser_avatar(),img_user, BitmapFactory.decodeResource(this.getResources(), R.drawable.empty_image));
 
+			bmpManager.loadBitmap(user.getUser_avatar(), img_user,
+					BitmapFactory.decodeResource(this.getResources(),
+							R.drawable.empty_image));
 
 		}
 		jifen.setText(user.getScore());
@@ -161,6 +162,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		}
 		mobile.setText(user.getMobile());
 	}
+
 	private View.OnClickListener editerClickListener = new View.OnClickListener() {
 		public void onClick(View v) {
 			CharSequence[] items = { getString(R.string.img_from_album),
@@ -168,6 +170,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 			imageChooseItem(items);
 		}
 	};
+
 	/**
 	 * 操作选择
 	 * 
@@ -201,7 +204,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 
 						// 裁剪头像的绝对路径
 						protraitPath = FILE_SAVEPATH + cropFileName;
-						Log.e("protraitPath",protraitPath);
+						Log.e("protraitPath", protraitPath);
 						protraitFile = new File(protraitPath);
 
 						origUri = Uri.fromFile(new File(FILE_SAVEPATH,
@@ -221,7 +224,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 
 		imageDialog.show();
 	}
-	
+
 	/**
 	 * 选择图片裁剪
 	 * 
@@ -239,7 +242,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		startActivityForResult(Intent.createChooser(intent, "选择图片"),
 				ImageUtils.REQUEST_CODE_GETIMAGE_BYSDCARD);
 	}
-	
+
 	/**
 	 * 相机拍照
 	 * 
@@ -251,8 +254,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		startActivityForResult(intent,
 				ImageUtils.REQUEST_CODE_GETIMAGE_BYCAMERA);
 	}
-	
-	
+
 	/**
 	 * 拍照后裁剪
 	 * 
@@ -272,9 +274,9 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		intent.putExtra("outputY", CROP);
 		startActivityForResult(intent, ImageUtils.REQUEST_CODE_GETIMAGE_BYCROP);
 	}
-	
-	
+
 	private LoadingDialog loading;
+
 	/**
 	 * 上传新照片
 	 */
@@ -286,7 +288,8 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 				if (msg.what == 1 && msg.obj != null) {
 					EditUserFace res = (EditUserFace) msg.obj;
 					// 提示信息
-					//UIHelper.ToastMessage(MycountActivity.this, res.getErrorMessage());
+					// UIHelper.ToastMessage(MycountActivity.this,
+					// res.getErrorMessage());
 					if (res.getOpen().equals("1")) {
 						// 显示新头像
 						img_user.setImageBitmap(protraitBitmap);
@@ -315,15 +318,16 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 					Message msg = new Message();
 					Log.e("protraitFile.getName()", protraitFile.getName());
 					try {
-						 EditUserFace res = MzeatApplication.getInstance().getService().getUserFace(protraitFile);
-						
+						EditUserFace res = MzeatApplication.getInstance()
+								.getService().getUserFace(protraitFile);
+
 						if (res != null && res.getOpen().equals("1")) {
 							// 保存新头像到缓存
 							String filename = FileUtils.getFileName(user
 									.getUser_avatar());
 							Log.e("filename", filename);
-							ImageUtils.saveImage(MycountActivity.this, filename,
-									protraitBitmap);
+							ImageUtils.saveImage(MycountActivity.this,
+									filename, protraitBitmap);
 						}
 						msg.what = 1;
 						msg.obj = res;
@@ -337,6 +341,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 			};
 		}.start();
 	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -345,8 +350,31 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		case R.id.btn_logout:
 			Intent sInten = new Intent("com.mzeat.msg");
 			stopService(sInten);
+
 			MzeatApplication.getInstance().getpPreferencesConfig()
-			.setInt("isMsg", 0);
+					.setInt("count", 0);
+
+			My_shareDb my_shareDb = new My_shareDb(MycountActivity.this);
+			if (my_shareDb.getMy_share() != null
+					&& my_shareDb.getMy_share().size() > 0) {
+				my_shareDb.deleteAll();
+			}
+
+			my_shareDb.closeDB();
+
+			U_commentlist_itemDb u_commentlist_itemDb = new U_commentlist_itemDb(
+					MycountActivity.this);
+
+			if (u_commentlist_itemDb.getItems() != null
+					&& u_commentlist_itemDb.getItems().size() > 0) {
+				u_commentlist_itemDb.deleteAll();
+			}
+
+			u_commentlist_itemDb.closeDB();
+
+			MzeatApplication.getInstance().getpPreferencesConfig()
+					.setInt("isMsg", 0);
+			
 			PreferencesConfig mConfig = MzeatApplication.getInstance()
 					.getpPreferencesConfig();
 			mConfig.setString("email", "");
@@ -356,10 +384,8 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 			startActivityForResult(intent, 1);
 			MzeatApplication.getInstance().getpPreferencesConfig()
 					.setInt("logout", 1);
-			
-			
-			
-			//finish();
+
+			// finish();
 			break;
 		case R.id.edit:
 			intent = new Intent(MycountActivity.this, EditacountActivity.class);
@@ -374,8 +400,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 			signin();
 			break;
 		case R.id.rl_myorder:
-			intent = new Intent(MycountActivity.this,
-					MyOrderActivity.class);
+			intent = new Intent(MycountActivity.this, MyOrderActivity.class);
 			startActivity(intent);
 			break;
 		default:
@@ -386,32 +411,36 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 
 	protected void onResume() {
 		super.onResume();
-		// LogUtil.getLogOnResume(TAG);
-		Log.e("fromregist",
-				String.valueOf(MzeatApplication.getInstance()
-						.getpPreferencesConfig().getInt("fromregist", 0)));
+
+		// Log.e("fromregist",
+		// String.valueOf(MzeatApplication.getInstance()
+		// .getpPreferencesConfig().getInt("fromregist", 0)));
+		// 从注册页面注册成功跳转到我的账号
 		if (MzeatApplication.getInstance().getpPreferencesConfig()
 				.getInt("fromregist", 0) == 1) {
 			login();
 			MzeatApplication.getInstance().getpPreferencesConfig()
 					.setInt("fromregist", 0);
 		}
-		Intent intent = getIntent();
-		intent.getIntExtra("fromlogin", 0);
-		Log.e("fromlogin", String.valueOf(intent.getIntExtra("fromlogin", 0)));
-		if (intent.getIntExtra("fromlogin", 0) == 1) {
-			mUserDb = new UserDb(MycountActivity.this);
-			user = mUserDb.getUser();
-			mUserDb.closeDB();
-			setViewData();
-		}
 
+		// 从登陆页面登陆成功跳转到我的账号
+		// Intent intent = getIntent();
+		// intent.getIntExtra("fromlogin", 0);
+		// Log.e("fromlogin", String.valueOf(intent.getIntExtra("fromlogin",
+		// 0)));
+		// if (intent.getIntExtra("fromlogin", 0) == 1) {
+		// mUserDb = new UserDb(MycountActivity.this);
+		// user = mUserDb.getUser();
+		// mUserDb.closeDB();
+		// setViewData();
+		// }
+
+		// 其他界面跳转到我的账号
 		mUserDb = new UserDb(MycountActivity.this);
 		user = mUserDb.getUser();
 		mUserDb.closeDB();
 		setViewData();
-		
-		// setViewData();
+
 		networkChange = new NetworkChange();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -599,17 +628,16 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 
 		}
 	};
-private Signin signin = new Signin();
+	private Signin signin = new Signin();
+
 	private class SigninTask extends GenericTask {
 
 		@Override
 		protected TaskResult _doInBackground(TaskParams... params) {
 
 			// TODO Auto-generated method stub
-			
-		
-			signin = MzeatApplication.getInstance().getService()
-					.getSignin();
+
+			signin = MzeatApplication.getInstance().getService().getSignin();
 			if (signin.getOpen().equals("1")) {
 				return TaskResult.OK;
 			} else if (signin.getOpen().equals("0")) {
@@ -620,8 +648,6 @@ private Signin signin = new Signin();
 		}
 
 	}
-
-	
 
 	private void signin() {
 
@@ -674,8 +700,8 @@ private Signin signin = new Signin();
 				super.success = false;
 				// Log.e("loaddata()", "loaddata()");
 
-			}else {
-				
+			} else {
+
 			}
 		}
 
@@ -693,7 +719,7 @@ private Signin signin = new Signin();
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -701,7 +727,7 @@ private Signin signin = new Signin();
 		if (resultCode == 1) {
 			login();
 		}
-		
+
 		switch (requestCode) {
 		case ImageUtils.REQUEST_CODE_GETIMAGE_BYCAMERA:
 			startActionCrop(origUri, cropUri);// 拍照后裁剪

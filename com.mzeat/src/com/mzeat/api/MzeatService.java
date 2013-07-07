@@ -551,7 +551,7 @@ public class MzeatService implements IMzeatService {
 	}
 
 	@Override
-	public ShareDetail getShareDetail(String share_id) {
+	public ShareDetail getShareDetail(String share_id,String comment_id) {
 		// TODO Auto-generated method stub
 		ShareDetail shareDetail = new ShareDetail();
 		String url = String.format("%s/index.php?", ServerUrl);
@@ -563,6 +563,7 @@ public class MzeatService implements IMzeatService {
 		params.add(new BasicNameValuePair("pwd", MzeatApplication.getInstance()
 				.getpPreferencesConfig().getString("pwd", "")));
 		params.add(new BasicNameValuePair("share_id", share_id));
+		params.add(new BasicNameValuePair("comment_id", comment_id));
 		try {
 			Response response = mHttpClient.post(url, params);
 			 //Log.e("response", response.toString());
@@ -1018,7 +1019,7 @@ public class MzeatService implements IMzeatService {
 			// Log.e("jarray", jarray.toString());
 			// Log.e("code", code);
 
-			if ( total  != null && Integer.valueOf(total) > 0) {
+			if ( total  != null ) {
 
 				
 				if (  jarray != null && jarray.length() > 0) {
@@ -1052,9 +1053,9 @@ public class MzeatService implements IMzeatService {
 
 				} 
 				u_commentlist.setOpen("1");
-			} else {
+			}else {
 				u_commentlist.setOpen("0");
-			}
+			} 
 		} catch (Exception ex) {
 			// TODO: handle exception
 			ex.printStackTrace();

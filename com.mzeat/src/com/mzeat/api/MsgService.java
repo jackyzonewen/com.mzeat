@@ -251,52 +251,55 @@ public class MsgService extends Service {
 
 				int oldCount = MzeatApplication.getInstance()
 						.getpPreferencesConfig().getInt("count", 0);
-				// 当客户端本地消息数为0
-				if (oldCount == 0) {
-					sendNotice();
-				} else // 当客户端本地消息数不为0
-				{
-					// 当本地消息数与请求消息数不等
-					if (count != oldCount) {
+				if (count != 0) {
+					// 当客户端本地消息数为0
+					if (oldCount == 0) {
 						sendNotice();
-					} else // 当本地消息数与请求消息数相等
+					} else // 当客户端本地消息数不为0
 					{
-
-						My_shareDb my_shareDb = new My_shareDb(MsgService.this);
-						ArrayList<My_share> oldMy_shares = my_shareDb
-								.getMy_share();
-						ArrayList<My_share> newMy_shares = u_commentlist
-								.getMy_share();
-						my_shareDb.closeDB();
-
-						// 先比较我的分享的评论
-						if (oldMy_shares.size() != newMy_shares.size()) {
+						// 当本地消息数与请求消息数不等
+						if (count != oldCount) {
 							sendNotice();
-						} else {
-							boolean sendnotice = oldMy_shares
-									.containsAll(newMy_shares);
-							if (!sendnotice) {
-								sendNotice();
-							} else //再比较我的评论的回复
-								{
-								U_commentlist_itemDb u_commentlist_itemDb = new U_commentlist_itemDb(
-										MsgService.this);
-								ArrayList<U_commentlist_item> oldItems = u_commentlist_itemDb
-										.getItems();
-								ArrayList<U_commentlist_item> newItems = u_commentlist
-										.getItem();
-								u_commentlist_itemDb.closeDB();
+						} else {// 当本地消息数与请求消息数相等
 
-								boolean itemequal = oldItems
-										.containsAll(newItems);
-								if (!itemequal) {
+							My_shareDb my_shareDb = new My_shareDb(
+									MsgService.this);
+							ArrayList<My_share> oldMy_shares = my_shareDb
+									.getMy_share();
+							ArrayList<My_share> newMy_shares = u_commentlist
+									.getMy_share();
+							my_shareDb.closeDB();
+
+							// 先比较我的分享的评论
+							if (oldMy_shares.size() != newMy_shares.size()) {
+								sendNotice();
+							} else {
+								boolean sendnotice = oldMy_shares
+										.containsAll(newMy_shares);
+								if (!sendnotice) {
 									sendNotice();
+								} else{ // 再比较我的评论的回复
+								
+									U_commentlist_itemDb u_commentlist_itemDb = new U_commentlist_itemDb(
+											MsgService.this);
+									ArrayList<U_commentlist_item> oldItems = u_commentlist_itemDb
+											.getItems();
+									ArrayList<U_commentlist_item> newItems = u_commentlist
+											.getItem();
+									u_commentlist_itemDb.closeDB();
+
+									boolean itemequal = oldItems
+											.containsAll(newItems);
+									if (!itemequal) {
+										sendNotice();
+									}
 								}
 							}
-
 						}
-
 					}
+
+				}else {
+					sendNotice();
 				}
 
 			}
@@ -319,16 +322,25 @@ public class MsgService extends Service {
 				.setInt("count", count);
 
 		My_shareDb my_shareDb = new My_shareDb(MsgService.this);
-		my_shareDb.deleteAll();
+		if (my_shareDb.getMy_share() != null
+				&& my_shareDb.getMy_share().size() > 0) {
+			my_shareDb.deleteAll();
+		}
+
 		if (u_commentlist.getMy_share() != null) {
 			my_shareDb.add(u_commentlist.getMy_share());
 		}
 
 		my_shareDb.closeDB();
-		
+
 		U_commentlist_itemDb u_commentlist_itemDb = new U_commentlist_itemDb(
 				MsgService.this);
-		u_commentlist_itemDb.deleteAll();
+
+		if (u_commentlist_itemDb.getItems() != null
+				&& u_commentlist_itemDb.getItems().size() > 0) {
+			u_commentlist_itemDb.deleteAll();
+		}
+
 		if (u_commentlist.getItem() != null) {
 			u_commentlist_itemDb.add(u_commentlist.getItem());
 		}
@@ -340,18 +352,18 @@ public class MsgService extends Service {
 			isVoice();
 		}
 
-		//刷新主页面的消息数
+		// 刷新主页面的消息数
 		Intent intent = new Intent();
 		intent.putExtra("count", count);
 		intent.setAction("android.intent.action.setTextView");
-		intent.setAction("android.intent.action.setViewData");// action与接收器相同
+		// intent.setAction("android.intent.action.setViewData");// action与接收器相同
 		sendBroadcast(intent);
 
-		//刷新消息界面
-		//Intent mIntent = new Intent();
-		//mIntent.setAction("android.intent.action.setViewData");// action与接收器相同
-		//sendBroadcast(mIntent);
-		
+		// 刷新消息界面
+		Intent mIntent = new Intent();
+		mIntent.setAction("android.intent.action.setViewData");// action与接收器相同
+		sendBroadcast(mIntent);
+
 		Log.e("sendnotice", "sendnotice");
 	}
 

@@ -103,8 +103,14 @@ public class GridViewAdapter extends BaseAdapter {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					//UIHelper.showImageZoomDialog(v.getContext(),  mDatas.get(pos));
+					ArrayList<String> url_imgs = new ArrayList<String>();
+					for (int i = 0; i < imgs.size(); i++) {
+						String img_url = imgs.get(i).getImg();
+						url_imgs.add(img_url);
+					}
 					Intent intent = new Intent(xContext, SharePhoto.class);
-					intent.putStringArrayListExtra("img_url", mDatas);
+					intent.putStringArrayListExtra("img_url", url_imgs);
+					intent.putExtra("position", pos);
 					xContext.startActivity(intent);
 				}
 			});

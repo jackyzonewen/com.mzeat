@@ -55,18 +55,26 @@ public class MessageActivity extends BaseActivity {
 		mShareDb = new My_shareDb(this);
 		my_shares = mShareDb.getMy_share();
 		mShareDb.closeDB();
-		if (my_shares != null && my_shares.size()>0) {
+		if ( my_shares.size()>0) {
 			mShareAdapter = new My_shareAdapter(this);
 			mShareAdapter.setDataList(my_shares);
+			lv_my_share.setAdapter(mShareAdapter);
+		}else {
+			mShareAdapter = new My_shareAdapter(this);
+			mShareAdapter.clear();
 			lv_my_share.setAdapter(mShareAdapter);
 		}
 		
 		mCommentlist_itemDb = new U_commentlist_itemDb(this);
 		u_commentlist_items = mCommentlist_itemDb.getItems();
 		mCommentlist_itemDb.closeDB();
-		if (u_commentlist_items != null && u_commentlist_items.size()>0) {
+		if ( u_commentlist_items.size()>0) {
 			mCommentAdapter = new My_commentAdapter(this);
 			mCommentAdapter.setDataList(u_commentlist_items);
+			lv_my_comment.setAdapter(mCommentAdapter);
+		}else {
+			mCommentAdapter = new My_commentAdapter(this);
+			mCommentAdapter.clear();
 			lv_my_comment.setAdapter(mCommentAdapter);
 		}
 		
@@ -104,6 +112,7 @@ public class MessageActivity extends BaseActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		setViewData();
 		receiver = new MyReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("android.intent.action.setViewData");
@@ -134,7 +143,6 @@ public class MessageActivity extends BaseActivity {
 		}
 
 		public MyReceiver() {
-			System.out.println("MyReceiver");
 			// 构造函数，做一些初始化工作，本例中无任何作用
 		}
 

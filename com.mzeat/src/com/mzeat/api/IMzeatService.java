@@ -43,25 +43,28 @@ public interface IMzeatService {
 	Map<String, Object> getMyOrder(String page);
 
 	Privilege getPrivilege(String email, String pwd, String page,
-			String m_latitude, String m_longitude,String keyword);
+			String m_latitude, String m_longitude, String keyword);
 
-	Share getShareList(String page,String tag);
+	Share getShareList(String page, String tag);
 
-	ShareDetail getShareDetail(String share_id);
-	
-	CardActivate getCardActivate(String mzeatno,String mzeatpwd,String true_name, String mobile);
+	ShareDetail getShareDetail(String share_id,String comment_id);
+
+	CardActivate getCardActivate(String mzeatno, String mzeatpwd,
+			String true_name, String mobile);
 
 	EditUserFace getUserFace(File file);
-	
-	CommentReturn getCommentReturn(String share_id,String is_relay,String content,String parent_id);
 
-	PubShare getPubShare(String content,String title,ArrayList<File> file);
-	
+	CommentReturn getCommentReturn(String share_id, String is_relay,
+			String content, String parent_id);
+
+	PubShare getPubShare(String content, String title, ArrayList<File> file);
+
 	InviteReturn getInviteReturn(String page);
-	
+
 	SaleReturn getSaleReturn(String page);
+
 	ChangeReturn getChangeReturn(String page);
-	
-	U_commentlist getU_commentlist(String email,String pwd);
-	
+
+	U_commentlist getU_commentlist(String email, String pwd);
+
 }

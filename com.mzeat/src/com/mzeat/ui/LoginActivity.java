@@ -16,6 +16,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,13 +37,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private LoadDataTask mLoadDataTask;
 	public final static String SER_KEY = "login";
 	private InputMethodManager imm;
+	private int frommycart;
+	private int frommessage;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-
+		frommycart = getIntent().getIntExtra("frommycart", 0);
+		frommessage = getIntent().getIntExtra("frommessage", 0);
 		initView();
 
 	}
@@ -120,7 +124,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				
 				int fromprivilege = MzeatApplication.getInstance()
 						.getpPreferencesConfig().getInt("fromprivilege", 0);
-
 				if (fromprivilege == 1) {
 					MzeatApplication.getInstance().getpPreferencesConfig()
 							.setInt("fromprivilege", 0);
@@ -129,7 +132,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 				int fromshare = MzeatApplication.getInstance()
 						.getpPreferencesConfig().getInt("fromshare", 0);
-
 				if (fromshare == 1) {
 					MzeatApplication.getInstance().getpPreferencesConfig()
 							.setInt("fromshare", 0);
@@ -140,7 +142,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				
 				int fromsharelist = MzeatApplication.getInstance()
 						.getpPreferencesConfig().getInt("fromsharelist", 0);
-
 				if (fromsharelist == 1) {
 					MzeatApplication.getInstance().getpPreferencesConfig()
 							.setInt("fromsharelist", 0);
@@ -154,11 +155,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 						.setInt("logout", 0);
 				Intent intent = new Intent();
 				intent.putExtra("back", 0);
-
-				// Bundle mBundle = new Bundle();
-				// mBundle.putSerializable(SER_KEY, mLoadDataTask.getUser());
-				// intent.putExtras(mBundle);
-				setResult(1, intent);
+				Log.e("frommycart", String.valueOf(frommycart));
+				Log.e("frommessage", String.valueOf(frommessage));
+				if (frommycart == 1) {
+					setResult(3, intent);
+				}else if (frommessage == 1) {
+					setResult(4, intent);
+				}else {
+					setResult(1, intent);
+				}
+				
 				finish();
 
 				ShowToast.showLoginSuccess(LoginActivity.this);
@@ -268,7 +274,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 			int fromprivilege = MzeatApplication.getInstance()
 					.getpPreferencesConfig().getInt("fromprivilege", 0);
-
 			if (fromprivilege == 1) {
 				MzeatApplication.getInstance().getpPreferencesConfig()
 						.setInt("fromprivilege", 0);
@@ -277,24 +282,25 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			
 			int fromshare = MzeatApplication.getInstance()
 					.getpPreferencesConfig().getInt("fromshare", 0);
-
 			if (fromshare == 1) {
 				MzeatApplication.getInstance().getpPreferencesConfig()
 						.setInt("fromshare", 0);
 				finish();
 			}
+			
 			int fromsharelist = MzeatApplication.getInstance()
 					.getpPreferencesConfig().getInt("fromsharelist", 0);
-
 			if (fromsharelist == 1) {
 				MzeatApplication.getInstance().getpPreferencesConfig()
 						.setInt("fromsharelist", 0);
 				finish();
 				
 			}
+			
 			intent = new Intent(LoginActivity.this, MainActivity.class);
 			// startActivity(intent);
-			setResult(2, intent);
+				setResult(2, intent);
+			
 			finish();
 			break;
 		case R.id.btn_regist:

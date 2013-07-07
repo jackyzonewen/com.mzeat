@@ -52,7 +52,7 @@ public class MainActivity extends TabActivity {
 		mycount = new Intent(MainActivity.this, MycountActivity.class);
 		setContentView(R.layout.activity_main);
 		tv_tips = (TextView) findViewById(R.id.main_tab_new_message);
-
+		count = mConfig.getInt("count", 0);
 		if (count != 0) {
 			tv_tips.setText(String.valueOf(count));
 			tv_tips.setVisibility(View.VISIBLE);
@@ -119,13 +119,30 @@ public class MainActivity extends TabActivity {
 
 				break;
 			case R.id.radio_cart:
-				tabHost.setCurrentTabByTag("shopcart");
+				//tabHost.setCurrentTabByTag("shopcart");
 
+				if (mConfig.getInt("loginstate", 0) == 1) {
+					tabHost.setCurrentTabByTag("shopcart");
+
+				} else {
+					Intent intent = new Intent(MainActivity.this,
+							LoginActivity.class);
+					intent.putExtra("frommycart", 1);
+					startActivityForResult(intent, 1);
+				}
 				break;
 
 			case R.id.radio_message:
-				tabHost.setCurrentTabByTag("message");
+			
+				if (mConfig.getInt("loginstate", 0) == 1) {
+					tabHost.setCurrentTabByTag("message");
 
+				} else {
+					Intent intent = new Intent(MainActivity.this,
+							LoginActivity.class);
+					intent.putExtra("frommessage", 1);
+					startActivityForResult(intent, 1);
+				}
 				break;
 			case R.id.radio_mycount:
 				if (mConfig.getInt("loginstate", 0) == 1) {
@@ -150,8 +167,14 @@ public class MainActivity extends TabActivity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		
+		if (MzeatApplication.getInstance().getpPreferencesConfig().getInt("loginstate", 0) != 1) {
+			MzeatApplication.getInstance().getpPreferencesConfig().setInt("count", 0);
+			tv_tips.setVisibility(View.GONE);
+		}
 		LogUtil.getLogOnStart(TAG);
 		
+		//从通知跳转到我的消息
 		int fromnotice = MzeatApplication.getInstance().getpPreferencesConfig().getInt("fromnotice",0);
 		Log.e("formnotice", String.valueOf(fromnotice));
 		if (fromnotice == 1) {
@@ -170,7 +193,7 @@ public class MainActivity extends TabActivity {
 			MzeatApplication.getInstance().getpPreferencesConfig()
 					.setInt("logout", 0);
 		}
-		// 注册成功后跳到我的账号
+		//注册成功后跳到我的账号
 		else if (logout == 2) {
 			rb_mycount.setChecked(true);
 			tabHost.setCurrentTabByTag("mycount");
@@ -224,11 +247,12 @@ public class MainActivity extends TabActivity {
 
 			// TODO Auto-generated method stub
 
-			System.out.println("OnReceiver");
+			//System.out.println("OnReceiver");
 
 			Bundle bundle = intent.getExtras();
 
 			count = bundle.getInt("count");
+			Log.e("count", String.valueOf(count));
 
 			if (count != 0) {
 				Log.e("START", "开始设置消息条数");
@@ -244,8 +268,7 @@ public class MainActivity extends TabActivity {
 		}
 
 		public MyReceiver() {
-
-			System.out.println("MyReceiver");
+			//System.out.println("MyReceiver");
 
 			// 构造函数，做一些初始化工作，本例中无任何作用
 
@@ -263,16 +286,24 @@ public class MainActivity extends TabActivity {
 			int gotowhere = data.getIntExtra("back", 0);
 			if (gotowhere == 0) {
 
-			
-				mycount.putExtra("fromlogin", 1);
+				//mycount.putExtra("fromlogin", 1);
 				tabHost.setCurrentTabByTag("mycount");
+				
 			}
 
 		}
 		// 在登陆页面返回跳转
 		else if (resultCode == 2) {
+			
+			Log.e("resultCode", String.valueOf(resultCode));
 			index.setChecked(true);
 
+		}else if (resultCode == 3) {
+			rb_myorder.setChecked(true);
+			tabHost.setCurrentTabByTag("shopcart");
+		}else if (resultCode == 4) {
+			rb_message.setChecked(true);
+			tabHost.setCurrentTabByTag("message");
 		}
 	}
 

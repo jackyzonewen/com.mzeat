@@ -2,14 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-     >
+    android:orientation="vertical" >
+
+    <ProgressBar
+        android:id="@+id/imagezoomdialog_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 
     <ImageView
         android:id="@+id/sharephoto"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerInParent="true"
-        android:scaleType="matrix" />
+        android:scaleType="matrix"
+        android:visibility="gone" />
 
 </RelativeLayout>

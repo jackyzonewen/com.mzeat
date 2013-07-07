@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,7 +32,10 @@ public class SharePhoto extends BaseActivity {
 	private ArrayList<String> url_imgs = new ArrayList<String>();
 	DisplayMetrics dm;
 	
+	
+	ProgressBar pb;
 	int fromwhere;
+	int position = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -46,6 +50,8 @@ public class SharePhoto extends BaseActivity {
 		
 		
 		fromwhere = getIntent().getIntExtra("fromShareList", 0);
+		position = getIntent().getIntExtra("position", 0);
+		
 		if (fromwhere == 1) {
 			url_imgs.add(getIntent().getStringExtra("img_url"));
 		}else {
@@ -59,14 +65,16 @@ public class SharePhoto extends BaseActivity {
 			RelativeLayout ll  = (RelativeLayout) LayoutInflater.from(
 					SharePhoto.this).inflate(R.layout.activity_photo,
 					null);
-				
+			pb = (ProgressBar)  ll.findViewById(R.id.imagezoomdialog_progress)	;
 			imgView =  (ImageView) ll.findViewById(R.id.sharephoto);
 			imgView.setOnTouchListener(new  MulitPointTouchListener());// 设置触屏监听
-			bmpManager.loadBitmap(url_imgs.get(i), imgView);
+			bmpManager.loadBitmap(url_imgs.get(i), imgView,pb);
 			pageViews.add(ll);
 
 		}
 		mPager.setAdapter(new myPagerView());
+		mPager.setCurrentItem(position);
+		current_num.setText(String.valueOf(position+1));
 		mPager.setOnPageChangeListener(new  OnPageChangeListener() {
 			
 			@Override

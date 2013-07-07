@@ -345,15 +345,15 @@ public class ShareDetailActivity extends BaseActivity {
 
 	private ShareDetail shareDetail = new ShareDetail();
 	private String share_id;
-
+	private String comment_id;
 	private class LoadDataTask extends GenericTask {
 
 		@Override
 		protected TaskResult _doInBackground(TaskParams... params) {
 			// TODO Auto-generated method stub
-
+			comment_id = getIntent().getStringExtra("comment_id");
 			shareDetail = MzeatApplication.getInstance().getService()
-					.getShareDetail(share_id);
+					.getShareDetail(share_id,comment_id);
 			int code = Integer.valueOf(shareDetail.getOpen());
 			if (code == MzeatService.RESULT_OK) {
 

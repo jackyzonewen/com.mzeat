@@ -30,6 +30,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 /**
  * 异步线程加载图片工具类
  * 使用说明：
@@ -45,6 +46,7 @@ public class BmpManager {
     private static HashMap<String, SoftReference<Bitmap>> cache;  
     private static ExecutorService pool;  
     private static Map<ImageView, String> imageViews;  
+    private static Map<ProgressBar, String> pbViews;  
     private Bitmap defaultBmp;  
     
     
@@ -60,6 +62,7 @@ public class BmpManager {
         cache = new HashMap<String, SoftReference<Bitmap>>();  
         pool = Executors.newFixedThreadPool(5);  //固定线程池
         imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
+        pbViews = Collections.synchronizedMap(new WeakHashMap<ProgressBar, String>());
     }  
     public BmpManager(DisplayMetrics dm,Bitmap def){
     	this.defaultBmp = def;
@@ -161,8 +164,8 @@ public class BmpManager {
      * @param url
      * @param imageView
      */
-    public void loadBitmap(String url, ImageView imageView) {  
-    	loadBitmap(url, imageView, this.defaultBmp, 0, 0);
+    public void loadBitmap(String url, ImageView imageView,ProgressBar pb) {  
+    	loadBitmap(url, imageView, this.defaultBmp, 0, 0,pb);
     }
 	
     /**
@@ -171,8 +174,8 @@ public class BmpManager {
      * @param imageView
      * @param defaultBmp
      */
-    public void loadBitmap(String url, ImageView imageView, Bitmap defaultBmp) {  
-    	loadBitmap(url, imageView, defaultBmp, 0, 0);
+    public void loadBitmap(String url, ImageView imageView, Bitmap defaultBmp, ProgressBar bp) {  
+    	loadBitmap(url, imageView, defaultBmp, 0, 0 ,bp);
     }
     
     /**
@@ -182,8 +185,9 @@ public class BmpManager {
      * @param width
      * @param height
      */
-    public void loadBitmap(String url, ImageView imageView, Bitmap defaultBmp, int width, int height) {  
-        imageViews.put(imageView, url);  
+    public void loadBitmap(String url, ImageView imageView, Bitmap defaultBmp, int width, int height,ProgressBar pb) {  
+        imageViews.put(imageView, url); 
+        pbViews.put(pb, url);
         bitmap = getBitmapFromCache(url);  
    
         if (bitmap != null) {  
@@ -192,6 +196,9 @@ public class BmpManager {
             minZoom(bitmap);// 计算最小缩放比
 			CheckView(imageView,bitmap);// 设置图像居中
 			imageView.setImageMatrix(matrix);
+			pb.setVisibility(View.GONE);
+			imageView.setVisibility(View.VISIBLE);
+			
         } else {  
         	//加载SD卡中的图片缓存
         	String filename = FileUtils.getFileName(url);
@@ -204,14 +211,14 @@ public class BmpManager {
     	            minZoom(bitmap);// 计算最小缩放比
     				CheckView(imageView,bitmap);// 设置图像居中
     				imageView.setImageMatrix(matrix);
+    				pb.setVisibility(View.GONE);
+    				imageView.setVisibility(View.VISIBLE);
         	}else{
 				//线程加载网络图片
-        		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(, height);
         		
-        		imageView.setLayoutParams(params);
-        		imageView.setImageBitmap(defaultBmp);
+        		//imageView.setImageBitmap(defaultBmp);
         		
-        		queueJob(url, imageView, width, height);
+        		queueJob(url, imageView, width, height,pb);
         	}
         }  
     }  
@@ -235,18 +242,21 @@ public class BmpManager {
      * @param width
      * @param height
      */
-    public void queueJob(final String url, final ImageView imageView, final int width, final int height) {  
+    public void queueJob(final String url, final ImageView imageView, final int width, final int height,final ProgressBar pb) {  
         /* Create handler in UI thread. */  
         final Handler handler = new Handler() {  
             public void handleMessage(Message msg) {  
-                String tag = imageViews.get(imageView);  
-                if (tag != null && tag.equals(url)) {  
+                String tag = imageViews.get(imageView);
+                String pbtag = pbViews.get(pb);
+                if (tag != null && tag.equals(url)&& pbtag != null && pbtag.equals(url)) {  
                     if (msg.obj != null) {  
                     	bitmap = (Bitmap) msg.obj;
                     	 imageView.setImageBitmap(bitmap);
                          minZoom(bitmap);// 计算最小缩放比
              			CheckView(imageView,bitmap);// 设置图像居中
              			imageView.setImageMatrix(matrix);
+	             		pb.setVisibility(View.GONE);
+            			imageView.setVisibility(View.VISIBLE);
                         try {
                         	//向SD卡中写入图片缓存
 							ImageUtils.saveImage(imageView.getContext(), FileUtils.getFileName(url), (Bitmap) msg.obj);
