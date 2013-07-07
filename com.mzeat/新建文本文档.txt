@@ -1,0 +1,38 @@
+﻿fOrest   17:15:55
+m_latitude   //y 
+m_longitude  //x
+fOrest   17:30:17
+http://www.mzeat.com/mapi/index.php?act=share&r_type=2&email=Ave_&pwd=wen620&share_id=3883&comment_id=
+http://www.mzeat.com/mapi/index.php?act=nearbygoodses&r_type=2&email=Ave_&pwd=wen620&keyword=是生活的必需品
+http://www.mzeat.com/mapi/index.php?act=sharelist&r_type=2&email=Ave_&pwd=wen620&is_new=1&tag=美女
+http://www.mzeat.com/mapi/index.php?act=addcomment&r_type=2&email=Ave_&pwd=wen620&share_id=3439&is_relay=1&content=test&parent_id=2347
+
+
+http://www.mzeat.com/mapi/index.php?act=addshare&r_type=2&email=Ave_&pwd=wen620&content=图片测试&title=标题测试
+
+
+http://www.mzeat.com/mapi/index.php?act=merchantlist&r_type=2&keyword=�Ѽ�
+http://www.mzeat.com/mapi/index.php?act=register&r_type=2&email=665656@qq.com&password=wen620&user_name=Ave1_&mobile=15876718948
+注册
+http://www.mzeat.com/mapi/index.php?act=share&r_type=2&email=Ave_&pwd=wen620&share_id=3585
+http://www.mzeat.com/mapi/index.php?act=share&r_type=2&email=Ave_&pwd=wen620&share_id=3492
+    <!--
+                <greendroid.widget.AsyncImageView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/img_shopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/empty_image" />
+
+    -->
+    http://www.mzeat.com/mapi/index.php?act=avatar&r_type=2&email=Ave_&pwd=wen620
+    GeT_RiGhT  16:46:40
+http://www.mzeat.com/mapi/index.php?act=sharelist&r_type=2&email=Ave_&pwd=wen620&is_new=1
+GeT_RiGhT  17:14:17
+http://www.mzeat.com/mapi/index.php?act=share&r_type=2&email=Ave_&pwd=wen620&share_id=3492
+http://www.mzeat.com/mapi/index.php?act=login&r_type=2&email=&pwd=
+
+http://www.mzeat.com/mapi/index.php?act=my_order_list&r_type=1&email=Ave_&pwd=wen620&page=1

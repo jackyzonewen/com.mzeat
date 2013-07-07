@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:page="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/index_top" />
+
+    <include
+        android:id="@+id/poster"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        layout="@layout/poster_item" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/home_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:visibility="gone" />
+
+    <com.mzeat.ui.widget.CirclePageIndicator
+        android:id="@+id/home_indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginTop="-10dip"
+        page:fillColor="@android:color/black"
+        page:pageColor="@android:color/white"
+        page:radius="5dp"
+        page:strokeColor="@android:color/darker_gray"
+        page:strokeWidth="1dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <ImageButton
+                android:id="@+id/btn_shopping"
+                android:layout_width="61.6dp"
+                android:layout_height="83.2dp"
+                android:layout_marginBottom="22dp"
+                android:background="@drawable/selector_shopping" />
+
+            <ImageButton
+                android:id="@+id/btn_privilege"
+                android:layout_width="61.6dp"
+                android:layout_height="83.2dp"
+                android:layout_marginBottom="22dp"
+                android:layout_marginLeft="22dp"
+                android:layout_toRightOf="@id/btn_shopping"
+                android:background="@drawable/selector_privilege" />
+
+            <ImageButton
+                android:id="@+id/btn_sale"
+                android:layout_width="61.6dp"
+                android:layout_height="83.2dp"
+                android:layout_marginBottom="22dp"
+                android:layout_marginLeft="22dp"
+                android:layout_toRightOf="@id/btn_privilege"
+                android:background="@drawable/selector_sale" />
+
+            <ImageButton
+                android:id="@+id/btn_coupon"
+                android:layout_width="61.6dp"
+                android:layout_height="83.2dp"
+                android:layout_marginBottom="22dp"
+                android:layout_marginLeft="22dp"
+                android:layout_toRightOf="@id/btn_sale"
+                android:background="@drawable/selector_change" />
+
+            <ImageButton
+                android:id="@+id/btn_microshare"
+                android:layout_width="61.6dp"
+                android:layout_height="83.2dp"
+                android:layout_below="@id/btn_shopping"
+                android:background="@drawable/selector_microshare" />
+
+            <ImageButton
+                android:id="@+id/btn_shop"
+                android:layout_width="61.6dp"
+                android:layout_height="83.2dp"
+                android:layout_below="@id/btn_shopping"
+                android:layout_marginLeft="22dp"
+                android:layout_toRightOf="@id/btn_microshare"
+                android:background="@drawable/selector_invite" />
+
+            <ImageButton
+                android:id="@+id/btn_change"
+                android:layout_width="61.6dp"
+                android:layout_height="83.2dp"
+                android:layout_below="@id/btn_shopping"
+                android:layout_marginLeft="22dp"
+                android:layout_toRightOf="@id/btn_shop"
+                android:background="@drawable/selector_shop" />
+
+            <ImageButton
+                android:id="@+id/btn_invite"
+                android:layout_width="61.6dp"
+                android:layout_height="83.2dp"
+                android:layout_below="@id/btn_shopping"
+                android:layout_marginLeft="22dp"
+                android:layout_toRightOf="@id/btn_change"
+                android:background="@drawable/selector_coupon" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

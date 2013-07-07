@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="searchtype">
+        <item>搜商家</item>
+        <item>搜团购</item>
+        <item>搜分享</item>
+    </string-array>
+    <string-array name="default_smiley_texts">
+        <item>"[傲慢]"</item>
+        <item>"[白眼]"</item>
+        <item>"[鄙视]"</item>
+        <item>"[闭嘴]"</item>
+        <item>"[擦汗]"</item>
+        <item>"[菜刀]"</item>
+        <item>"[差劲]"</item>
+        <item>"[欢庆]"</item>
+        <item>"[虫子]"</item>
+        <item>"[呲牙]"</item>
+        <item>"[捶打]"</item>
+        <item>"[大便]"</item>
+        <item>"[大兵]"</item>
+        <item>"[大叫]"</item>
+        <item>"[大哭]"</item>
+        <item>"[蛋糕]"</item>
+        <item>"[发怒]"</item>
+        <item>"[刀]"</item>
+        <item>"[得意]"</item>
+        <item>"[凋谢]"</item>
+        <item>"[饿]"</item>
+        <item>"[发呆]"</item>
+        <item>"[发抖]"</item>
+        <item>"[饭]"</item>
+        <item>"[飞吻]"</item>
+        <item>"[奋斗]"</item>
+        <item>"[尴尬]"</item>
+        <item>"[给力]"</item>
+        <item>"[勾引]"</item>
+        <item>"[鼓掌]"</item>
+        <item>"[哈哈]"</item>
+        <item>"[害羞]"</item>
+        <item>"[哈欠]"</item>
+        <item>"[花]"</item>
+        <item>"[坏笑]"</item>
+        <item>"[挥手]"</item>
+        <item>"[回头]"</item>
+        <item>"[激动]"</item>
+        <item>"[惊恐]"</item>
+        <item>"[惊讶]"</item>
+        <item>"[咖啡]"</item>
+        <item>"[可爱]"</item>
+        <item>"[可怜]"</item>
+        <item>"[磕头]"</item>
+        <item>"[示爱]"</item>
+        <item>"[酷]"</item>
+        <item>"[难过]"</item>
+        <item>"[骷髅]"</item>
+        <item>"[困]"</item>
+        <item>"[篮球]"</item>
+        <item>"[冷汗]"</item>
+        <item>"[流汗]"</item>
+        <item>"[流泪]"</item>
+        <item>"[礼物]"</item>
+        <item>"[爱心]"</item>
+        <item>"[骂人]"</item>
+        <item>"[不开心]"</item>
+        <item>"[不好]"</item>
+        <item>"[很好]"</item>
+        <item>"[佩服]"</item>
+        <item>"[啤酒]"</item>
+        <item>"[乒乓]"</item>
+        <item>"[撇嘴]"</item>
+        <item>"[强]"</item>
+        <item>"[亲亲]"</item>
+        <item>"[出丑]"</item>
+        <item>"[足球]"</item>
+        <item>"[拳头]"</item>
+        <item>"[弱]"</item>
+         <item>"[色]"</item>
+        <item>"[闪电]"</item>
+        <item>"[胜利]"</item>
+         <item>"[衰]"</item>
+        <item>"[睡觉]"</item>
+        <item>"[太阳]"</item>
+    </string-array>
+    <!--
+  <string-array name="default_smiley_names">
+    <item >"爱你"</item>
+    <item >"机器人"</item>
+    <item>"拜拜"</item>
+    <item >"抱抱"</item>
+    <item >"悲剧"</item>
+    <item >"悲伤"</item>
+    <item >"便便"</item>
+    <item>"鄙视"</item>
+    <item >"闭嘴"</item>
+    <item>"不要"</item>
+    <item >"馋嘴"</item>
+  </string-array>
+    -->
+
+</resources>

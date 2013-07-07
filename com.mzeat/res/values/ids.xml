@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><resources>    <item name="title_back" type="id">false</item>    <item name="title_name" type="id">false</item>    <item name="gridview" type="id"/>    <item name="webview" type="id"/>    <item name="scrollview" type="id"/></resources>

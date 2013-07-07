@@ -1,0 +1,161 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <!-- 设置activity切换动画 -->
+        <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+    </style>
+    <!-- animation 样式 -->
+    <style name="activityAnimation" parent="@android:style/Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_left_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_left_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_right_out</item>
+    </style>
+
+    <style name="Textcolor">
+        <item name="android:textColor">@android:color/primary_text_dark</item>
+        <item name="android:textColorHighlight">#FFFF9200</item>
+        <item name="android:textColorHint">#808080</item>
+        <item name="android:textColorLink">#5C5CFF</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Textcolor.Black">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Textcolor.BlackLarge">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">23sp</item>
+    </style>
+
+    <style name="Textcolor.BlackMedium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+    <!-- >文本颜色为黑色，大小为20sp< -->
+    <style name="Textcolor.BlackSmall">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Textcolor.BlackPoi">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Textcolor.BlackCam">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Textcolor.BlackCamSmall">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Textcolor.GreenMedium">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Textcolor.RedSmall">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Textcolor.RedMedium">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Textcolor.RedBig">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Textcolor.SomberMedium">
+        <item name="android:textColor">@color/somber</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="SomberMedium">
+        <item name="android:textColor">@color/somber</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Textcolor.SomberSmall">
+        <item name="android:textColor">@color/somber</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Textcolor.DarkGray">
+        <item name="android:textColor">@color/darkgray</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="grouplist_item_textview">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
+    <style name="Textcolor.listview_myorder_title">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">#2f6813</item>
+    </style>
+
+    <style name="Textcolor.listview_invite_title">
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:textColor">@color/titlecolor_invite</item>
+    </style>
+
+    <style name="Textcolor.listview_invite_pubtime">
+        <item name="android:textSize">17.0sp</item>
+        <item name="android:textColor">@color/textcolor_invite_pubtime</item>
+    </style>
+
+    <style name="Textcolor.listview_invite_content">
+        <item name="android:textSize">17.0sp</item>
+        <item name="android:textColor">@color/textcolor_invite_content</item>
+    </style>
+ <style name="Textcolor.listview_change_jifen">
+        <item name="android:textSize">21.0sp</item>
+        <item name="android:textColor">@color/textcolor_change_jifen</item>
+    </style>
+    <style name="loading_small" parent="@android:style/Widget.ProgressBar.Small">
+        <item name="android:indeterminateDrawable">@anim/loading</item>
+        <item name="android:layout_width">21dip</item>
+        <item name="android:layout_height">21dip</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/full_transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+</resources>

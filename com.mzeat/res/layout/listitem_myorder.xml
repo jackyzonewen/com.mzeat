@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/listitem_myorder"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/ordertitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="13元狂抢原价46元江南雨美味…"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="18dp"
+        android:singleLine="true"
+        android:textAppearance="@style/Textcolor.listview_myorder_title" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/ordertitle"
+        android:layout_alignLeft="@id/ordertitle">
+
+        <TextView
+            android:id="@+id/ordernum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ordernum"
+            android:textAppearance="@style/Textcolor.SomberSmall" />
+
+        <TextView
+            android:id="@+id/tv_ordernum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/ordernum"
+            android:text="2012120807595263"
+            android:textAppearance="@style/Textcolor.SomberSmall" />
+    </RelativeLayout>
+
+</RelativeLayout>

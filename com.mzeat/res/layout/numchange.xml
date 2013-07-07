@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+     >
+
+    <!--
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请输入订购场次"
+            android:textSize="18sp" />
+    </LinearLayout>
+    -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cutnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+              android:background="@drawable/selector_cut"
+              android:layout_marginRight="5dp"
+            />
+
+        <EditText
+            android:id="@+id/choisenum"
+            android:layout_width="80dp"
+            android:layout_height="54dp"
+            android:digits="0123456789"
+            android:inputType="number"
+            android:maxLength="3"
+            android:gravity="center"
+            android:selectAllOnFocus="true"
+            android:background="@drawable/cart_edit"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/addnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_add" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm"
+             android:textAppearance="@style/Textcolor.BlackMedium"
+          />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+             android:textAppearance="@style/Textcolor.BlackMedium"
+           />
+    </LinearLayout>
+
+</LinearLayout>

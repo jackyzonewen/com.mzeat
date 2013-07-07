@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp" >
+
+    <ImageView
+        android:id="@+id/img_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/img_food" />
+
+    <TextView
+        android:id="@+id/cart_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/img_cart"
+        android:ellipsize="end"
+        android:lines="2"
+        android:text="富试通单反相机相机相机"
+        android:textAppearance="@style/Textcolor.GreenMedium" />
+
+    <TextView
+        android:id="@+id/singleprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cart_title"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/img_cart"
+        android:text="@string/singelprice"
+        android:textAppearance="@style/Textcolor.RedSmall" />
+
+    <TextView
+        android:id="@+id/tv_singleprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cart_title"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@id/singleprice"
+        android:text="1000"
+        android:textAppearance="@style/Textcolor.RedSmall" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/singleprice"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/img_cart" >
+
+        <TextView
+            android:id="@+id/cart_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cart_edit_text"
+            android:gravity="center"
+            android:text="2"
+            android:layout_centerVertical="true"
+            android:textAppearance="@style/Textcolor.BlackMedium" />
+
+        <ImageButton
+            android:id="@+id/img_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+             android:layout_centerVertical="true"
+            android:background="@drawable/selector_delete" >
+        </ImageButton>
+    </RelativeLayout>
+</RelativeLayout>

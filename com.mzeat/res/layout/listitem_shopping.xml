@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp" >
+
+    <ImageView
+        android:id="@+id/img_shopping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/img_food" />
+
+    <TextView
+        android:id="@+id/shopping_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toLeftOf="@+id/num"
+        android:layout_toRightOf="@id/img_shopping"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="围龙居安然纳米汗蒸馆"
+        android:textAppearance="@style/Textcolor.GreenMedium" />
+
+    <ImageView
+        android:id="@+id/img_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shopping_title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toRightOf="@id/img_shopping"
+        android:background="@drawable/star0" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_start"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/img_shopping"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="梅县新县城盘古步行街"
+        android:textAppearance="@style/Textcolor.BlackCamSmall" />
+
+    <TextView
+        android:id="@+id/privilege"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:text="折"
+        android:textAppearance="@style/Textcolor.BlackCam" />
+
+    <TextView
+        android:id="@+id/num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/privilege"
+        android:layout_toLeftOf="@id/privilege"
+        android:text="4.5"
+        android:textAppearance="@style/Textcolor.RedSmall" />
+
+</RelativeLayout>

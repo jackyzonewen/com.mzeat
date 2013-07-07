@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="black">#000000</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="darkgray">#6f6f6f</color>
+    <color name="lightgray">#eeeeee</color>
+    <color name="white">#FFFFFF</color>
+    <color name="greenless">#7dcb34</color>
+    <color name="green">#319500</color>
+    <color name="glass">#00000000</color>
+    <color name="red">#FF0000</color>
+    <color name="somber">#454545</color>
+    <color name="blue">#0000FF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="transparent">#00000000</color>
+    <color name="bubble_dark_background">#B2191919</color>
+    <color name="grayblue">#B9D3EE</color>
+    <color name="list_background_p">#FFC125</color>
+    <color name="list_background_s">#EEEE00</color>
+    <color name="list_background_f">#FFFF00</color>
+    <color name="list_background_odd">#FFFFFF</color>
+    <color name="list_background_even">#CDCDC1</color>
+    <color name="zired">#B6346B</color>
+    <color name="grayless">#f8f8f8</color>
+    <color name="graymore">#d2d2d2</color>
+    <color name="full_transparent">#00000000</color>
+    <color name="bg_bottom">#a6a6a6</color>
+    <!-- 我的订单文字颜色 -->
+    <color name="greenmore">#2f6813</color>
+    <!-- 我的订单标题背景色 -->
+    <color name="cyan">#8dcd86</color>
+    <!-- 我的订单内容背景色 -->
+    <color name="lightblue">#d3f1be</color>
+    <!-- 好优惠背景色 -->
+    <color name="bg_privilege">#f8fcf7</color>
+    <!-- 好优惠标题背景色 -->
+    <color name="privilegetitle">#e8f5e6</color>
+    <!-- 好优惠内容背景色 -->
+    <color name="privilegecontent">#d0dccf</color>
+    <color name="mycartbottom">#eaeaea</color>
+    <color name="graywhite">#F5F5F5</color>
+    <!-- 招聘绿色分割线 -->
+    <color name="split_green">#7dcb34</color>
+    <color name="titlecolor_invite">#295400</color>
+    <color name="textcolor_invite_pubtime">#909090</color>
+ <color name="textcolor_invite_content">#464646</color>
+ 
+ <color name="textcolor_change_jifen">#fe7000</color>
+</resources>

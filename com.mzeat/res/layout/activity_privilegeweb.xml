@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/title_edituserinfo" />
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp" 
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/title_invite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="梅州乐活餐吧店内新会员制度"
+            android:textAppearance="@style/Textcolor.listview_invite_title" />
+
+        <TextView
+            android:id="@+id/tv_create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_invite"
+            android:layout_centerHorizontal="true"
+            android:text="2013-06-22 15:46:37"
+            android:layout_marginTop="10dp"
+            android:textAppearance="@style/Textcolor.listview_invite_pubtime" />
+    </RelativeLayout>
+<View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/split_line_invite" />
+    <WebView
+        android:id="@+id/wv_detail_privilege"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>
