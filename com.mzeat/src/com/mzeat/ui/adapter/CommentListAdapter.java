@@ -72,28 +72,38 @@ public class CommentListAdapter extends
 					BitmapFactory.decodeResource(context.getResources(),
 							R.drawable.empty_image));
 		}
-		String content = item.getContent();
-		Pattern pattern = Pattern.compile( "@([\\w\\u4e00-\\u9fa5]+):", Pattern.CASE_INSENSITIVE); 
-		Matcher matcher = pattern.matcher(content); 
-		String name = "";
-		if (matcher.find()) { 
-		name = matcher.group(1);
-		System.out.println(name);
-		} 
 		
-		String[] contentArray = content.split(name);
+		if (!item.getParent_id().equals("0")) {
+			String content = item.getContent();
+			Pattern pattern = Pattern.compile( "@([\\w\\u4e00-\\u9fa5]+):", Pattern.CASE_INSENSITIVE); 
+			Matcher matcher = pattern.matcher(content); 
+			String name = "";
+			if (matcher.find()) { 
+			name = matcher.group(1);
+			System.out.println(name);
+			} 
+			if (name.equals("")) {
+				holder.content.setText(parser.addSmileySpans(item.getContent()));
+			}else {
+				String[] contentArray = content.split(name);
+				
+				StringBuffer sb = new StringBuffer();
+				sb.append(contentArray[0]);
+				sb.append(name);
+				sb.append(contentArray[1]);
+				
+				SpannableStringBuilder spannable = new SpannableStringBuilder(
+						sb.toString());
+				int begin = contentArray[0].length();
+				int end = contentArray[0].length()+name.length();
+				spannable.setSpan(new ForegroundColorSpan(Color.RED), begin, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				holder.content.setText(parser.addSmileySpans(spannable));
+			}
+			
+		}else {
+			holder.content.setText(parser.addSmileySpans(item.getContent()));
+		}
 		
-		StringBuffer sb = new StringBuffer();
-		sb.append(contentArray[0]);
-		sb.append(name);
-		sb.append(contentArray[1]);
-		
-		SpannableStringBuilder spannable = new SpannableStringBuilder(
-				sb.toString());
-		int begin = contentArray[0].length();
-		int end = contentArray[0].length()+name.length();
-		spannable.setSpan(new ForegroundColorSpan(Color.RED), begin, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		holder.content.setText(parser.addSmileySpans(spannable));
 
 	}
 

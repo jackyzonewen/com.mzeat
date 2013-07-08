@@ -12,5 +12,6 @@ public final class Manifest {
         /**  百度地图权限 
          */
         public static final String BAIDU_LOCATION_SERVICE="android.permission.BAIDU_LOCATION_SERVICE";
+        public static final String JPUSH_MESSAGE="com.mzeat.permission.JPUSH_MESSAGE";
     }
 }

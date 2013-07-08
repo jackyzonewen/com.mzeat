@@ -133,6 +133,8 @@ public class PubShareActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				if (!isTitle) {
 					et_title.setVisibility(View.VISIBLE);
+					et_title.setFocusable(true);
+					et_title.setFocusableInTouchMode(true);
 					isTitle=true;
 				}else {
 					et_title.setVisibility(View.GONE);
@@ -474,7 +476,7 @@ public class PubShareActivity extends BaseActivity {
 					final ImageView img =	(ImageView) LayoutInflater
 					.from(PubShareActivity.this).inflate(
 							R.layout.img_pubshare, null);
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300,300);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200,200);
 					//ImageView img = new ImageView(PubShareActivity.this);
 					//LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(60,45);
 					//img.setLayoutParams(params);
@@ -539,14 +541,14 @@ public class PubShareActivity extends BaseActivity {
 		        	//获取图片缩略图 只有Android2.1以上版本支持
 		    		if(MzeatApplication.isMethodsCompat(android.os.Build.VERSION_CODES.ECLAIR_MR1)){
 		    			String imgName = FileUtils.getFileName(theLarge);
-		    			bitmap = ThumbnailUtils.createVideoThumbnail(imgName, MediaStore.Images.Thumbnails.MICRO_KIND);
-		    					//ImageUtils.loadImgThumbnail(PubShareActivity.this, imgName, MediaStore.Images.Thumbnails.MICRO_KIND);
+		    			//bitmap = ThumbnailUtils.createVideoThumbnail(imgName, MediaStore.Images.Thumbnails.MICRO_KIND);
+		    					bitmap =ImageUtils.loadImgThumbnail(PubShareActivity.this, imgName, MediaStore.Images.Thumbnails.MICRO_KIND);
 		    			//bitmap.recycle();
 		    		}
 		        	
 		        	if(bitmap == null && !StringUtils.isEmpty(theLarge))
 		        	{
-		        		bitmap = ImageUtils.loadImgThumbnail(theLarge, 100, 100);
+		        		bitmap = ImageUtils.loadImgThumbnail(theLarge, 500, 500);
 		        		//bitmap.recycle();
 		        	}
 		        }
@@ -556,7 +558,7 @@ public class PubShareActivity extends BaseActivity {
 		        	if(bitmap == null && !StringUtils.isEmpty(theLarge))
 		        	{
 		        		
-		        		bitmap = ImageUtils.loadImgThumbnail(theLarge, 100, 100);
+		        		bitmap = ImageUtils.loadImgThumbnail(theLarge, 500, 500);
 		        		//String imgName = FileUtils.getFileName(theLarge);
 		    			//bitmap = ImageUtils.loadImgThumbnail(PubShareActivity.this, imgName, MediaStore.Images.Thumbnails.MICRO_KIND);
 
@@ -594,7 +596,7 @@ public class PubShareActivity extends BaseActivity {
 						{
 							try {
 								//压缩上传的图片
-								ImageUtils.createImageThumbnail(PubShareActivity.this, theLarge, theThumbnail, 800, 100);
+								ImageUtils.createImageThumbnail(PubShareActivity.this, theLarge, theThumbnail, 800, 60);
 								imgFile = new File(theThumbnail);
 							} catch (IOException e) {
 								e.printStackTrace();

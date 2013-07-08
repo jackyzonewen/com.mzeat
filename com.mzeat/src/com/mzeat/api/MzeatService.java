@@ -604,7 +604,7 @@ public class MzeatService implements IMzeatService {
 						Comment com = new Comment();
 						com = JsonUtil.fromJson(list.get(i).toString(),
 								Comment.class);
-						//Log.e("com", com.getTime());
+						Log.e("com", com.getParent_id());
 						comment.add(com);
 					}
 					mComments.setList(comment);

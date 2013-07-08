@@ -2,6 +2,7 @@ package com.mzeat.ui;
 
 import java.util.ArrayList;
 
+import com.mzeat.MzeatApplication;
 import com.mzeat.R;
 import com.mzeat.db.My_shareDb;
 import com.mzeat.db.U_commentlist_itemDb;
@@ -20,82 +21,126 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 public class MessageActivity extends BaseActivity {
 
-	
 	private MyListView lv_my_share;
 	private MyListView lv_my_comment;
 	private TextView tv_title;
-	
+
 	private ArrayList<My_share> my_shares;
-	private ArrayList<U_commentlist_item>  u_commentlist_items;
+	private ArrayList<U_commentlist_item> u_commentlist_items;
 	private My_shareDb mShareDb;
 	private U_commentlist_itemDb mCommentlist_itemDb;
 	private My_shareAdapter mShareAdapter;
 	private My_commentAdapter mCommentAdapter;
-	
-	
+
 	MyReceiver receiver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_message);
-		
+
 		initView();
 		setViewData();
-		
-		
+
 	}
+
 	private void setViewData() {
 		// TODO Auto-generated method stub
-		
+
 		mShareDb = new My_shareDb(this);
 		my_shares = mShareDb.getMy_share();
 		mShareDb.closeDB();
-		if ( my_shares.size()>0) {
+		if (my_shares.size() > 0) {
 			mShareAdapter = new My_shareAdapter(this);
 			mShareAdapter.setDataList(my_shares);
 			lv_my_share.setAdapter(mShareAdapter);
-		}else {
+			lv_my_share.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					// TODO Auto-generated method stub
+					String share_id = my_shares.get(position).getShare_id();
+					Intent intent = new Intent(MessageActivity.this,
+							ShareDetailActivity.class);
+					intent.putExtra("share_id", share_id);
+					startActivity(intent);
+					mShareDb = new My_shareDb(MessageActivity.this);
+					mShareDb.delete(share_id);
+					mShareDb.closeDB();
+					int count = MzeatApplication.getInstance()
+							.getpPreferencesConfig().getInt("count", 0);
+					if (count != 0) {
+						count = count - 1;
+						MzeatApplication.getInstance().getpPreferencesConfig()
+								.setInt("count", count);
+					}
+				}
+			});
+		} else {
 			mShareAdapter = new My_shareAdapter(this);
 			mShareAdapter.clear();
 			lv_my_share.setAdapter(mShareAdapter);
 		}
-		
+
 		mCommentlist_itemDb = new U_commentlist_itemDb(this);
 		u_commentlist_items = mCommentlist_itemDb.getItems();
 		mCommentlist_itemDb.closeDB();
-		if ( u_commentlist_items.size()>0) {
+		if (u_commentlist_items.size() > 0) {
 			mCommentAdapter = new My_commentAdapter(this);
 			mCommentAdapter.setDataList(u_commentlist_items);
 			lv_my_comment.setAdapter(mCommentAdapter);
-		}else {
+			lv_my_comment.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					// TODO Auto-generated method stub
+					String share_id = u_commentlist_items.get(position).getShare_id();
+					String comment_id = u_commentlist_items.get(position).getComment_id();
+
+					Intent intent = new Intent(MessageActivity.this,
+							ShareDetailActivity.class);
+					intent.putExtra("share_id", share_id);
+					intent.putExtra("comment_id", comment_id);
+					startActivity(intent);
+					mCommentlist_itemDb = new U_commentlist_itemDb(MessageActivity.this);
+					mCommentlist_itemDb.delete(comment_id);
+					mCommentlist_itemDb.closeDB();
+					int count = MzeatApplication.getInstance()
+							.getpPreferencesConfig().getInt("count", 0);
+					if (count != 0) {
+						count = count - 1;
+						MzeatApplication.getInstance().getpPreferencesConfig()
+								.setInt("count", count);
+					}
+				}
+			});
+		} else {
 			mCommentAdapter = new My_commentAdapter(this);
 			mCommentAdapter.clear();
 			lv_my_comment.setAdapter(mCommentAdapter);
 		}
-		
+
 	}
+
 	private void initView() {
 		// TODO Auto-generated method stub
+		findViewById(R.id.btn_back).setVisibility(View.GONE);
 		tv_title = (TextView) findViewById(R.id.tv_title);
 		tv_title.setText(R.string.message);
-		findViewById(R.id.btn_back).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				finish();
-			}
-		});
 		
 		lv_my_share = (MyListView) findViewById(R.id.lv_my_share);
 		lv_my_comment = (MyListView) findViewById(R.id.lv_my_comment);
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -107,7 +152,7 @@ public class MessageActivity extends BaseActivity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
@@ -118,16 +163,14 @@ public class MessageActivity extends BaseActivity {
 		filter.addAction("android.intent.action.setViewData");
 		registerReceiver(receiver, filter);
 	}
-	
-	
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 		unregisterReceiver(receiver);
 	}
-	
-	
+
 	public class MyReceiver extends BroadcastReceiver {
 
 		// 自定义一个广播接收器
@@ -136,7 +179,6 @@ public class MessageActivity extends BaseActivity {
 		public void onReceive(Context context, Intent intent) {
 
 			// TODO Auto-generated method stub
-
 
 			Log.e("	setViewData()", "setViewData()");
 			setViewData();

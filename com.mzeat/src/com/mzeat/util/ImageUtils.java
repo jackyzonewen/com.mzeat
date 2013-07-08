@@ -152,8 +152,8 @@ public class ImageUtils {
 			File file = new File(filePath);
 			fis = new FileInputStream(file);
 
-			// bitmap = BitmapFactory.decodeStream(fis,null,opts);
-			bitmap = BitmapFactory.decodeFile(filePath, opts);
+			 bitmap = BitmapFactory.decodeStream(fis,null,opts);
+			//bitmap = BitmapFactory.decodeFile(filePath, opts);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -290,7 +290,7 @@ public class ImageUtils {
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
 			ContentResolver crThumb = context.getContentResolver();
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 1;
+			options.inSampleSize = 2;
 			options.inTempStorage = new byte[32 * 1024];
 			bitmap = MethodsCompat.getThumbnail(crThumb, cursor.getInt(0),
 					kind, options);

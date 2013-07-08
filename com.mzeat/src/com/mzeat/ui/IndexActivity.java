@@ -16,6 +16,7 @@ import com.mzeat.image.ImageCache;
 import com.mzeat.image.ImageFetcher;
 import com.mzeat.image.ImageResizer;
 import com.mzeat.image.ImageCache.ImageCacheParams;
+import com.mzeat.image.PosterManager;
 import com.mzeat.location.BaiduLocationOption;
 import com.mzeat.model.Advs;
 import com.mzeat.task.GenericTask;
@@ -25,6 +26,7 @@ import com.mzeat.task.TaskResult;
 import com.mzeat.ui.adapter.GroupAdapter;
 import com.mzeat.ui.adapter.ImageFragmentAdapter;
 import com.mzeat.ui.widget.CirclePageIndicator;
+import com.mzeat.ui.widget.MulitPointTouchListener;
 import com.mzeat.util.CheckNetworkConnection;
 import com.mzeat.util.ConnectionChangeReceiver;
 import com.mzeat.util.ShowToast;
@@ -60,6 +62,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,8 +103,6 @@ public class IndexActivity extends BaseActivity {
 	public static final int load_fromnetwork_success = 1;
 	public static final int load_fromdb_success = 2;
 
-	private MzeatService mService = new MzeatService();
-	private Location location = null;
 
 	private LocationClient mLocClient = null;
 
@@ -109,12 +111,10 @@ public class IndexActivity extends BaseActivity {
 	private View view;
 	private List<String> groups;
 	private TextView tv_search_group;
-	ArrayList<String> list;
-	private ImageResizer mImageWorker;
-	private ImageCache mImageCache;
+	private ArrayList<String> list;
 
 	
-	private BitmapManager bmpManager;
+	private PosterManager bmpManager;
 	private InputMethodManager imm;
 
 	// BDLocation mBdLocation = mLocClient.get;
@@ -127,7 +127,7 @@ public class IndexActivity extends BaseActivity {
 
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-		this.bmpManager = new BitmapManager(BitmapFactory.decodeResource(this.getResources(), R.drawable.empty_image));
+		this.bmpManager = new PosterManager(BitmapFactory.decodeResource(this.getResources(), R.drawable.empty_image));
 		imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
 		mPager = (ViewPager) findViewById(R.id.home_pager);
 		indicator = (CirclePageIndicator) findViewById(R.id.home_indicator);
@@ -501,56 +501,31 @@ public class IndexActivity extends BaseActivity {
 						pageViews.clear();
 						for (int i = 0; i < urlImages.size(); i++) {
 
-							ImageView img = (ImageView) LayoutInflater.from(
-									IndexActivity.this).inflate(R.layout.img_poster,
-									null);
-							;
-							bmpManager.loadBitmap(urlImages.get(i),img, BitmapFactory.decodeResource(IndexActivity.this.getResources(), R.drawable.empty_image));
 
-						//mImageWorker = new ImageFetcher(IndexActivity.this,
-						//		LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-							// mImageWorker.setAdapter(imageThumbWorkerUrlsAdapter);
-						//	ImageCacheParams cacheParams = new ImageCacheParams(
-						//			ImageCache.IMAGE_DIR);
-						//	mImageWorker.setLoadingImage(R.drawable.empty_image);
-						//	mImageCache = new ImageCache(IndexActivity.this,
-						//			cacheParams);
-						//	mImageWorker.setImageCache(mImageCache);
-						//	mImageWorker.loadImage(urlImages.get(i), img);
-						//	Log.e("imgw", String.valueOf(img.getWidth()));
-						//	Log.e("imgh", String.valueOf(img.getHeight()));
-							//new ImageCacheTest().getImageView(urlImages.get(i), img,
-							//		IndexActivity.this);
-
-							pageViews.add(img);
-							 Log.e("getPoster", "getPoster");
+							
+							RelativeLayout ll = (RelativeLayout) LayoutInflater.from(
+									IndexActivity.this).inflate(R.layout.img_poster, null);
+							ProgressBar pb = (ProgressBar)  ll.findViewById(R.id.imagezoomdialog_progress)	;
+							ImageView imgView =  (ImageView) ll.findViewById(R.id.sharephoto);
+							bmpManager.loadBitmap(urlImages.get(i), imgView,pb);
+							
+							pageViews.add(ll);
+							Log.e("getPoster", "getPoster");
 						}
 					}
 				}else {
 					pageViews.clear();
 					for (int i = 0; i < urlImages.size(); i++) {
 
-						ImageView img = (ImageView) LayoutInflater.from(
-								IndexActivity.this).inflate(R.layout.img_poster,
-								null);
-						;
 
-						mImageWorker = new ImageFetcher(IndexActivity.this,
-								LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-						// mImageWorker.setAdapter(imageThumbWorkerUrlsAdapter);
-						ImageCacheParams cacheParams = new ImageCacheParams(
-								ImageCache.IMAGE_DIR);
-						mImageWorker.setLoadingImage(R.drawable.empty_image);
-						mImageCache = new ImageCache(IndexActivity.this,
-								cacheParams);
-						mImageWorker.setImageCache(mImageCache);
-						mImageWorker.loadImage(urlImages.get(i), img);
-						Log.e("imgw", String.valueOf(img.getWidth()));
-						Log.e("imgh", String.valueOf(img.getHeight()));
-						//new ImageCacheTest().getImageView(urlImages.get(i), img,
-						//		IndexActivity.this);
-
-						pageViews.add(img);
+						
+						RelativeLayout ll = (RelativeLayout) LayoutInflater.from(
+								IndexActivity.this).inflate(R.layout.img_poster, null);
+						ProgressBar pb = (ProgressBar)  ll.findViewById(R.id.imagezoomdialog_progress)	;
+						ImageView imgView =  (ImageView) ll.findViewById(R.id.sharephoto);
+						bmpManager.loadBitmap(urlImages.get(i), imgView,pb);
+						
+						pageViews.add(ll);
 						 Log.e("getPoster", "getPoster");
 					}
 				}
@@ -665,28 +640,17 @@ public class IndexActivity extends BaseActivity {
 		img_poster = mPosterDb.getImgs();
 		mPosterDb.closeDB();
 		if (img_poster.size() != 0) {
-			// mAdapter = new ImageFragmentAdapter(IndexActivity.this,
-			// getSupportFragmentManager(), advss);
+		
 
 			for (int i = 0; i < img_poster.size(); i++) {
 
-				ImageView img = (ImageView) LayoutInflater.from(
+				RelativeLayout ll = (RelativeLayout) LayoutInflater.from(
 						IndexActivity.this).inflate(R.layout.img_poster, null);
-				bmpManager.loadBitmap(img_poster.get(i),img, BitmapFactory.decodeResource(IndexActivity.this.getResources(), R.drawable.empty_image));
-	
-			//	mImageWorker = new ImageFetcher(IndexActivity.this,
-			//			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				// mImageWorker.setAdapter(imageThumbWorkerUrlsAdapter);
-			//	ImageCacheParams cacheParams = new ImageCacheParams(
-			//			ImageCache.IMAGE_DIR);
-			//	mImageWorker.setLoadingImage(R.drawable.empty_image);
-			//	mImageCache = new ImageCache(IndexActivity.this,
-			//			cacheParams);
-			//	mImageWorker.setImageCache(mImageCache);
-			//	mImageWorker.loadImage(img_poster.get(i), img);
-				//new ImageCacheTest().getImageView(advss.get(i), img,
-				//		IndexActivity.this);
-				pageViews.add(img);
+				ProgressBar pb = (ProgressBar)  ll.findViewById(R.id.imagezoomdialog_progress)	;
+				ImageView imgView =  (ImageView) ll.findViewById(R.id.sharephoto);
+				bmpManager.loadBitmap(img_poster.get(i), imgView,pb);
+				
+				pageViews.add(ll);
 				 Log.e("showoldposter", "showoldposter");
 			}
 

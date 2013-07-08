@@ -1,5 +1,7 @@
 package com.mzeat.ui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 
 import com.mzeat.MzeatApplication;
@@ -8,23 +10,48 @@ import com.mzeat.R;
 import com.mzeat.model.User;
 import com.mzeat.util.LogUtil;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost.OnTabChangeListener;
 
 public class MainActivity extends TabActivity {
 
+	AlertDialog menuDialog;// menu菜单Dialog
+	GridView menuGrid;
+	View menuView;
+	
+	
+	private final int ITEM_ABOUT = 0;// 关于
+	private final int ITEM_EXIT = 1;// 退出
+	
+	
+	/** 菜单图片 **/
+	int[] menu_image_array = {  R.drawable.menu_quit,
+			R.drawable.menu_about };
+	/** 菜单文字 **/
+	String[] menu_name_array = {  "关于","退出" };
+	
+	
 	TabHost tabHost;
 	TabHost.TabSpec tabSpec;
 	RadioGroup radioGroup;
@@ -59,12 +86,41 @@ public class MainActivity extends TabActivity {
 
 		}
 		
+		menuView = View.inflate(this, R.layout.gridview_menu, null);
+		menuDialog = new AlertDialog.Builder(this).create();
+		menuDialog.setView(menuView);
+		menuDialog.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(DialogInterface dialog, int keyCode,
+					KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_MENU)// 监听按键
+					dialog.dismiss();
+				return false;
+			}
+		});
+		
+		menuGrid = (GridView) menuView.findViewById(R.id.gridview);
+		menuGrid.setAdapter(getMenuAdapter(menu_name_array, menu_image_array));
+		/** 监听menu选项 **/
+		menuGrid.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				switch (arg2) {
+				case ITEM_ABOUT:
+
+					break;
+				case ITEM_EXIT:// 文件管理
+
+					break;
+				default:
+					break;
+				}
+				
+				
+			}
+		});
 		receiver = new MyReceiver();
-
 		IntentFilter filter = new IntentFilter();
-
 		filter.addAction("android.intent.action.setTextView");
-
 		registerReceiver(receiver, filter);
 		
 		tabHost = getTabHost();
@@ -275,7 +331,35 @@ public class MainActivity extends TabActivity {
 		}
 
 	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add("menu");// 必须创建一项
+		return super.onCreateOptionsMenu(menu);
+	}
 	
+	private SimpleAdapter getMenuAdapter(String[] menuNameArray,
+			int[] imageResourceArray) {
+		ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
+		for (int i = 0; i < menuNameArray.length; i++) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("itemImage", imageResourceArray[i]);
+			map.put("itemText", menuNameArray[i]);
+			data.add(map);
+		}
+		SimpleAdapter simperAdapter = new SimpleAdapter(this, data,
+				R.layout.item_menu, new String[] { "itemImage", "itemText" },
+				new int[] { R.id.item_image, R.id.item_text });
+		return simperAdapter;
+	}
+	@Override
+	public boolean onMenuOpened(int featureId, Menu menu) {
+		if (menuDialog == null) {
+			menuDialog = new AlertDialog.Builder(this).setView(menuView).show();
+		} else {
+			menuDialog.show();
+		}
+		return false;// 返回为true 则显示系统menu
+	}	
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

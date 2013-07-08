@@ -10,7 +10,7 @@ public class Comment implements Serializable {
 	private static final long serialVersionUID = -6720748098462082806L;
 	private String comment_id;
 	private String share_id;
-	
+	private String parent_id;
 	private String uid;
 	private String user_name;
 	private String user_avatar;
@@ -59,6 +59,12 @@ public class Comment implements Serializable {
 	}
 	public void setTime(String time) {
 		this.time = time;
+	}
+	public String getParent_id() {
+		return parent_id;
+	}
+	public void setParent_id(String parent_id) {
+		this.parent_id = parent_id;
 	}
 	
 }

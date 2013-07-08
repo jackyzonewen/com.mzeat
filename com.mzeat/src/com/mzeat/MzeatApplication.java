@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
+import cn.jpush.android.api.CustomPushNotificationBuilder;
+import cn.jpush.android.api.JPushInterface;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.BDNotifyListener;
@@ -78,7 +81,14 @@ public class MzeatApplication extends Application {
 		mLocationClient = new LocationClient(this);
 		mLocationClient.registerLocationListener(myListener);
 		//initMKSearch();
-
+		
+		
+		JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+        CustomPushNotificationBuilder builder = new CustomPushNotificationBuilder(this,R.layout.customer_notitfication_layout,R.id.icon, R.id.title, R.id.text);
+		builder.layoutIconDrawable = R.drawable.ic_launcher;
+		builder.developerArg0 = "developerArg2";
+		JPushInterface.setPushNotificationBuilder(2, builder);
 	}
 
 	public IMzeatService getService() {
