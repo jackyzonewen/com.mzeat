@@ -1,6 +1,7 @@
 package com.mzeat.ui;
 
 import com.baidu.location.LocationClient;
+import com.mzeat.AppManager;
 import com.mzeat.MzeatApplication;
 import com.mzeat.R;
 import com.mzeat.location.BaiduLocationOption;
@@ -38,6 +39,7 @@ public class ShoppingActivity extends TabActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		AppManager.getAppManager().addActivity(this);
 		setContentView(R.layout.activity_shopping);
 
 		tabHost = getTabHost();
@@ -95,7 +97,10 @@ public class ShoppingActivity extends TabActivity {
 	};
 
 
-
-
+	
+	protected void onDestroy() {
+		super.onDestroy();
+		AppManager.getAppManager().finishActivity(this);
+	};
 
 }

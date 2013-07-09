@@ -39,6 +39,7 @@ import com.mzeat.model.Page;
 import com.mzeat.model.Privilege;
 import com.mzeat.model.PrivilegeItem;
 import com.mzeat.model.PubShare;
+import com.mzeat.model.QQ_Login_Return;
 import com.mzeat.model.RegistInfo;
 import com.mzeat.model.Sale;
 import com.mzeat.model.SaleReturn;
@@ -1063,6 +1064,41 @@ public class MzeatService implements IMzeatService {
 			return u_commentlist;
 		}
 		return u_commentlist;
+	}
+
+	@Override
+	public QQ_Login_Return getQq_Login_Return(String qq_id) {
+		// TODO Auto-generated method stub
+		QQ_Login_Return qq_Login_Return = new QQ_Login_Return();
+		String url = String.format("%s/index.php?", ServerUrl);
+		ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
+		params.add(new BasicNameValuePair("act", "synclogin"));
+		params.add(new BasicNameValuePair("r_type", "1"));
+		params.add(new BasicNameValuePair("qq_id", qq_id));
+		params.add(new BasicNameValuePair("login_type", "qq"));
+	
+		try {
+			Response response = mHttpClient.post(url, params);
+			JSONObject jobj = response.asJSONObject();
+			
+			 Log.e("jobj", jobj.toString());
+			String code = jobj.getString("resulttype");
+			
+			
+
+			if ( code.equals("1")) {
+
+				qq_Login_Return = JsonUtil.fromJson(jobj.toString(), QQ_Login_Return.class);
+			}else {
+				qq_Login_Return.setResulttype("0");
+			} 
+		} catch (Exception ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
+			qq_Login_Return.setResulttype("2");
+			return qq_Login_Return;
+		}
+		return qq_Login_Return;
 	}
 
 }

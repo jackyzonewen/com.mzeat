@@ -15,6 +15,7 @@ import com.mzeat.model.MyOrder;
 import com.mzeat.model.MyOrderItem;
 import com.mzeat.model.Privilege;
 import com.mzeat.model.PubShare;
+import com.mzeat.model.QQ_Login_Return;
 import com.mzeat.model.RegistInfo;
 import com.mzeat.model.SaleReturn;
 import com.mzeat.model.Share;
@@ -67,4 +68,6 @@ public interface IMzeatService {
 
 	U_commentlist getU_commentlist(String email, String pwd);
 
+	
+	QQ_Login_Return getQq_Login_Return(String qq_id);
 }

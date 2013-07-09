@@ -1,5 +1,6 @@
 package com.mzeat.api;
 
+import com.mzeat.MzeatApplication;
 import com.mzeat.ui.MainActivity;
 
 import android.content.BroadcastReceiver;
@@ -39,12 +40,17 @@ public class MyReceiver extends BroadcastReceiver {
             Log.d(TAG, "接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "接收到推送下来的通知的ID: " + notifactionId);
+           
         	
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "用户点击打开了通知");
-            
+           //Log.e(TAG, bundle.getString(JPushInterface.EXTRA_ALERT)) ;
         	//打开自定义的Activity
         	Intent i = new Intent(context, MainActivity.class);
+        	
+        	
+        	MzeatApplication.getInstance().getpPreferencesConfig().setInt("toast_message", 1);
+        	MzeatApplication.getInstance().getpPreferencesConfig().setString("message", bundle.getString(JPushInterface.EXTRA_ALERT));
         	i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         	context.startActivity(i);
         	

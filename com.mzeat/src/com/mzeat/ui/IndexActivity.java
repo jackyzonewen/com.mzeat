@@ -47,6 +47,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -719,6 +720,6 @@ public class IndexActivity extends BaseActivity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
+	
 
 }

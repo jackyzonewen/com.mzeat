@@ -20,6 +20,8 @@ import android.preference.PreferenceManager;
  */
 public class AppConfig{
 	
+	
+	
 	private final static String APP_CONFIG = "config";
 	
 	public final static String TEMP_TWEET = "temp_tweet";

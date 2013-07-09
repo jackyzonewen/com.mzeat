@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 
+
+import cn.jpush.android.api.JPushInterface;
+
+import com.mzeat.AppManager;
 import com.mzeat.MzeatApplication;
 import com.mzeat.PreferencesConfig;
 import com.mzeat.R;
 import com.mzeat.model.User;
 import com.mzeat.util.LogUtil;
+import com.mzeat.util.ShowToast;
 
 import android.app.AlertDialog;
 import android.app.TabActivity;
@@ -22,35 +27,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost.OnTabChangeListener;
 
 public class MainActivity extends TabActivity {
 
-	AlertDialog menuDialog;// menu菜单Dialog
-	GridView menuGrid;
-	View menuView;
-	
-	
-	private final int ITEM_ABOUT = 0;// 关于
-	private final int ITEM_EXIT = 1;// 退出
-	
-	
-	/** 菜单图片 **/
-	int[] menu_image_array = {  R.drawable.menu_quit,
-			R.drawable.menu_about };
-	/** 菜单文字 **/
-	String[] menu_name_array = {  "关于","退出" };
-	
+
 	
 	TabHost tabHost;
 	TabHost.TabSpec tabSpec;
@@ -76,6 +71,7 @@ public class MainActivity extends TabActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		AppManager.getAppManager().addActivity(this);
 		mycount = new Intent(MainActivity.this, MycountActivity.class);
 		setContentView(R.layout.activity_main);
 		tv_tips = (TextView) findViewById(R.id.main_tab_new_message);
@@ -86,38 +82,11 @@ public class MainActivity extends TabActivity {
 
 		}
 		
-		menuView = View.inflate(this, R.layout.gridview_menu, null);
-		menuDialog = new AlertDialog.Builder(this).create();
-		menuDialog.setView(menuView);
-		menuDialog.setOnKeyListener(new OnKeyListener() {
-			public boolean onKey(DialogInterface dialog, int keyCode,
-					KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_MENU)// 监听按键
-					dialog.dismiss();
-				return false;
-			}
-		});
+
 		
-		menuGrid = (GridView) menuView.findViewById(R.id.gridview);
-		menuGrid.setAdapter(getMenuAdapter(menu_name_array, menu_image_array));
-		/** 监听menu选项 **/
-		menuGrid.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				switch (arg2) {
-				case ITEM_ABOUT:
-
-					break;
-				case ITEM_EXIT:// 文件管理
-
-					break;
-				default:
-					break;
-				}
-				
-				
-			}
-		});
+		
+		
+		
 		receiver = new MyReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("android.intent.action.setTextView");
@@ -224,6 +193,11 @@ public class MainActivity extends TabActivity {
 		// TODO Auto-generated method stub
 		super.onStart();
 		
+		int toast_message = getIntent().getIntExtra("toast_message", 0);
+		if (toast_message == 1) {
+			ShowToast.showMessage(this, getIntent().getStringExtra("message"));
+		}
+		
 		if (MzeatApplication.getInstance().getpPreferencesConfig().getInt("loginstate", 0) != 1) {
 			MzeatApplication.getInstance().getpPreferencesConfig().setInt("count", 0);
 			tv_tips.setVisibility(View.GONE);
@@ -267,10 +241,52 @@ public class MainActivity extends TabActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		LogUtil.getLogOnResume(TAG);
+		int toast_message = MzeatApplication.getInstance().getpPreferencesConfig().getInt("toast_message", 0);
+		Log.e(TAG, String.valueOf(toast_message));
+		
+		if (toast_message == 1) {
+		showMessageAlert();
+		MzeatApplication.getInstance().getpPreferencesConfig().setInt("toast_message", 0);
+			MzeatApplication.getInstance().getpPreferencesConfig().setString("message", "");
+		}
+	}
+	private void showMessageAlert()
+	{
+		final AlertDialog dlg = new AlertDialog.Builder(this).create();
+		dlg.show();
+		Window window = dlg.getWindow();
+		// *** 主要就是在这里实现这种效果的.
+		// 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+		window.setContentView(R.layout.ad_message);
+		// 为确认按钮添加事件,执行退出应用操作
+		Button ok = (Button) window.findViewById(R.id.btn_yes);
+		TextView content = (TextView)window.findViewById(R.id.tv_adcontent);
+		content.setText(MzeatApplication.getInstance().getpPreferencesConfig().getString("message",""));
+		ok.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				dlg.cancel();
+			}
+		});
+
+	}
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		LogUtil.getLogOnRestart(TAG);
+	}
+	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 		LogUtil.getLogOnPause(TAG);
+	
 	}
 
 	@Override
@@ -284,6 +300,7 @@ public class MainActivity extends TabActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		AppManager.getAppManager().finishActivity(this);
 		LogUtil.getLogOnDestroy(TAG);
 		try {
 			unregisterReceiver(receiver);
@@ -333,33 +350,42 @@ public class MainActivity extends TabActivity {
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add("menu");// 必须创建一项
+		//menu.add("menu");// 必须创建一项
+		// setIcon()方法为菜单设置图标，这里使用的是系统自带的图标，同学们留意一下,以
+		// android.R开头的资源是系统提供的，我们自己提供的资源是以R开头的
+		menu.add(Menu.NONE, Menu.FIRST, 1, "关于").setIcon(R.drawable.menu_about);
+		menu.add(Menu.NONE, Menu.FIRST + 1, 2, "退出").setIcon(R.drawable.menu_quit);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	private SimpleAdapter getMenuAdapter(String[] menuNameArray,
-			int[] imageResourceArray) {
-		ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
-		for (int i = 0; i < menuNameArray.length; i++) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("itemImage", imageResourceArray[i]);
-			map.put("itemText", menuNameArray[i]);
-			data.add(map);
-		}
-		SimpleAdapter simperAdapter = new SimpleAdapter(this, data,
-				R.layout.item_menu, new String[] { "itemImage", "itemText" },
-				new int[] { R.id.item_image, R.id.item_text });
-		return simperAdapter;
-	}
+	
 	@Override
-	public boolean onMenuOpened(int featureId, Menu menu) {
-		if (menuDialog == null) {
-			menuDialog = new AlertDialog.Builder(this).setView(menuView).show();
-		} else {
-			menuDialog.show();
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		switch (item.getItemId()) {
+
+		case Menu.FIRST :
+
+			//Toast.makeText(this, "删除菜单被点击了", Toast.LENGTH_LONG).show();
+
+			break;
+
+		case Menu.FIRST + 1:
+			Log.e("exit", "appexit");
+		AppManager.getAppManager().AppExit(this);
+			//Toast.makeText(this, "保存菜单被点击了", Toast.LENGTH_LONG).show();
+
+			break;
+
+
 		}
-		return false;// 返回为true 则显示系统menu
-	}	
+
+		return false;
+
+	}
+	
+	
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

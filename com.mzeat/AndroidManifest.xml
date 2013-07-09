@@ -247,6 +247,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.mzeat" />
             </intent-filter>
@@ -322,8 +323,22 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="0bffdac2ae270d494720519b" />
+            android:value="69afcc8b1bdffcc0bb39cd5f" />
         <!-- </>值来自开发者平台取得的AppKey -->
+
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent100278084" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
