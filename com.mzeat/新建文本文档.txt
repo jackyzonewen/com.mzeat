@@ -2,6 +2,8 @@
 m_latitude   //y 
 m_longitude  //x
 fOrest   17:30:17
+
+http://www.mzeat.com/mapi/index.php?act=register&r_type=2&email=665656@qq.com&password=wen620&user_name=Ave1_&mobile=15876718948&qq_id=
 http://www.mzeat.com/mapi/index.php?act=share&r_type=2&email=Ave_&pwd=wen620&share_id=3883&comment_id=
 http://www.mzeat.com/mapi/index.php?act=nearbygoodses&r_type=2&email=Ave_&pwd=wen620&keyword=是生活的必需品
 http://www.mzeat.com/mapi/index.php?act=sharelist&r_type=2&email=Ave_&pwd=wen620&is_new=1&tag=美女
