@@ -1,7 +1,7 @@
 package com.mzeat.ui;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+
+
 
 import com.mzeat.MzeatApplication;
 import com.mzeat.PreferencesConfig;
@@ -16,13 +16,25 @@ import com.mzeat.task.TaskResult;
 import com.mzeat.util.CheckNetworkConnection;
 import com.mzeat.util.Constants;
 import com.mzeat.util.ShowToast;
-import com.tencent.tauth.IUiListener;
-import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
+import com.mzeat.util.ThirdPartUtil;
+//import com.tencent.tauth.IUiListener;
+//import com.tencent.tauth.Tencent;
+import com.tencent.tauth.TencentOpenAPI;
+import com.tencent.tauth.TencentOpenAPI2;
+import com.tencent.tauth.TencentOpenHost;
+//import com.tencent.tauth.UiError;
+import com.tencent.tauth.bean.OpenId;
+import com.tencent.tauth.http.Callback;
+import com.tencent.tauth.http.TDebug;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -51,7 +63,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private int frommessage;
 	
 	private RelativeLayout rl_qq;
-	private Tencent mTencent;
+	//private Tencent mTencent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +72,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		setContentView(R.layout.activity_login);
 		
 		
-		mTencent = Tencent.createInstance(Constants.APP_ID, this.getApplicationContext());
+		//mTencent = Tencent.createInstance(Constants.APP_ID, this.getApplicationContext());
 		
-		
+		registerIntentReceivers();
 		imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
 		frommycart = getIntent().getIntExtra("frommycart", 0);
 		frommessage = getIntent().getIntExtra("frommessage", 0);
@@ -87,19 +99,19 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     private void onClickLogin() { 	
        // if (!mTencent.isSessionValid()) {
-            IUiListener listener = new BaseUiListener() {
-                @Override
-                protected void doComplete(JSONObject values) {
-                    Log.e("values", values.toString());
-                }
-            };
-            mTencent.login(this, Constants.SCOPE, listener);
+            //IUiListener listener = new BaseUiListener() {
+            //    @Override
+            //    protected void doComplete(JSONObject values) {
+           //         Log.e("values", values.toString());
+          //      }
+          //  };
+           // mTencent.login(this, Constants.SCOPE, listener);
        // } else {
          //   mTencent.logout(this);
           //  updateLoginButton();
        // }
     }
-	
+	/**
     private class BaseUiListener implements IUiListener {
 
         @Override
@@ -133,7 +145,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         	//  ShowToast.showMessage(  LoginActivity.this, "onCancel");
         }
     }
-    
+    **/
 	/**
 	 * 检测用户输入
 	 */
@@ -190,14 +202,19 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				startService(mIntent);
 				
 
-				//Intent nIntent = new Intent(LoginActivity.this,MainActivity.class);
-				Intent intent = new Intent();
-				intent.putExtra("back", 0);
-				setResult(1, intent);
+				Intent nIntent = new Intent(LoginActivity.this,MainActivity.class);
+				MzeatApplication.getInstance().getpPreferencesConfig().setInt("fromQQlogin", 1);
+				startActivity(nIntent);
+				//Intent intent = new Intent();
+				//intent.putExtra("back", 0);
+				//setResult(1, intent);
 				finish();
 
 				ShowToast.showLoginSuccess(LoginActivity.this);
 			} else if (result == TaskResult.FAILED) {
+				Intent nIntent = new Intent(LoginActivity.this,RegistActivity.class);
+				nIntent.putExtra("fromQQlogin", 1);
+				startActivity(nIntent);
 				ShowToast.showLoginFaile(LoginActivity.this);
 			} else {
 				ShowToast.showError(LoginActivity.this);
@@ -498,13 +515,126 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			break;
 			
 		case R.id.rl_qq:
-			onClickLogin();
+			TencentOpenAPI2.logIn(getApplicationContext(), mOpenId, scope, Constants.APP_ID, "_self", CALLBACK, null, null);
+
+			//onClickLogin();
 			break;
 		default:
 			break;
 		}
 	}
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		if ( receiver != null )
+		{
+			unregisterReceiver(receiver);
+		}
+	}
+	private void registerIntentReceivers()
+	{
+		receiver = new AuthReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(TencentOpenHost.AUTH_BROADCAST);
+		registerReceiver(receiver, filter);
+	}
+	private static final String CALLBACK = "auth://tauth.qq.com/";
+	private String scope = "get_simple_userinfo,add_pic_t,add_t,get_user_profile,add_share,add_topic,list_album,upload_pic,add_album,get_idollist";// ��Ȩ��Χ
+	private AuthReceiver receiver;
 
+	public String mAccessToken , mOpenId , mError , mClientId , mExpiresIn;
+	public static final int PROGRESS = 0;
+
+	@Override
+	protected Dialog onCreateDialog(int id)
+	{
+		Dialog dialog = null;
+		switch (id)
+		{
+			case PROGRESS:
+				dialog = new ProgressDialog(this);
+				((ProgressDialog) dialog).setMessage("请求中,请稍等...");
+				break;
+		}
+		return dialog;
+	}
+
+	public class AuthReceiver extends BroadcastReceiver
+	{
+		private static final String TAG = "AuthReceiver";
+
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			Bundle exts = intent.getExtras();
+			String raw = exts.getString("raw");
+			String access_token = exts.getString(TencentOpenHost.ACCESS_TOKEN);
+			String expires_in = exts.getString(TencentOpenHost.EXPIRES_IN);
+			String error_ret = exts.getString(TencentOpenHost.ERROR_RET);
+			String error_des = exts.getString(TencentOpenHost.ERROR_DES);
+			Log.i(TAG, String.format("raw: %s, access_token:%s, expires_in:%s", raw, access_token, expires_in));
+
+			if ( access_token != null )
+			{
+				mAccessToken = access_token;
+				mExpiresIn = expires_in;
+				if ( !isFinishing() )
+				{
+					showDialog(PROGRESS);
+				}
+
+				TencentOpenAPI.openid(access_token, new Callback()
+				{
+					@Override
+					public void onCancel(int flag)
+					{
+
+					}
+
+					@Override
+					public void onSuccess(final Object obj)
+					{
+						runOnUiThread(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								dismissDialog(PROGRESS);
+								mOpenId = ((OpenId) obj).getOpenId();
+								mClientId = ((OpenId) obj).getClientId();
+								MzeatApplication.getInstance().getpPreferencesConfig().getString("qq_id", mOpenId);
+								
+								qq_id = mOpenId;
+								getQQ_login();
+
+								
+							}
+						});
+					}
+
+					@Override
+					public void onFail(int ret, final String msg)
+					{
+						runOnUiThread(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								dismissDialog(PROGRESS);
+								TDebug.msg(msg, getApplicationContext());
+								ShowToast.showMessage(LoginActivity.this, "QQ登录失败。");
+							}
+						});
+					}
+				});
+			}
+			if ( error_ret != null )
+			{
+				mError = "获取access token失败" + "\n错误码: " + error_ret + "\n错误信息: " + error_des;
+			}
+		}
+	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub

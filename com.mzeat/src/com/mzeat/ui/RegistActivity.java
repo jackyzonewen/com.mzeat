@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,12 +31,24 @@ public class RegistActivity extends BaseActivity {
 
 	private TextView tv_title;
 
+	
+	
 	private EditText et_acount;
 	private EditText et_email;
 	private EditText et_mobile;
 	private EditText et_pwd;
 	private EditText et_rpwd;
-
+	
+	
+	private LinearLayout ll_bindmycount;
+	private TextView tips_bindnewcount;
+	private EditText et_mycount;
+	private EditText et_mypwd;
+	private ImageButton btn_bind;
+	
+	private String myacount;
+	private String mypwd;
+	
 	private String acount;
 	private String email;
 	private String mobile;
@@ -46,13 +59,14 @@ public class RegistActivity extends BaseActivity {
 
 	private ImageButton btn_regist;
 	private InputMethodManager imm;
+	int fromQQlogin = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_regist);
 		imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-
+		fromQQlogin = getIntent().getIntExtra("fromQQlogin", 0);
 		initView();
 		setViewData();
 	}
@@ -87,11 +101,28 @@ public class RegistActivity extends BaseActivity {
 				regist();
 			}
 		});
+		
+		ll_bindmycount = (LinearLayout) findViewById(R.id.ll_bindmycount);
+		tips_bindnewcount = (TextView) findViewById(R.id.tips_bindnewcount);
+		et_mycount = (EditText) findViewById(R.id.tv_mycount);
+		et_mypwd = (EditText) findViewById(R.id.tv_mypwd);
+		btn_bind = (ImageButton) findViewById(R.id.btn_bind);
+		
+		if (fromQQlogin == 1) {
+			ll_bindmycount.setVisibility(View.VISIBLE);
+			tips_bindnewcount.setVisibility(View.VISIBLE);
+		}
+		
 
 	}
 
 	private void setViewData() {
-		tv_title.setText(R.string.regist);
+		if (fromQQlogin == 1) {
+			tv_title.setText(R.string.bindcount);
+		}else {
+			tv_title.setText(R.string.regist);
+		}
+		
 
 	}
 

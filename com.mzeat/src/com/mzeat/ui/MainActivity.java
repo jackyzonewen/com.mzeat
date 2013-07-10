@@ -223,6 +223,17 @@ public class MainActivity extends TabActivity {
 			MzeatApplication.getInstance().getpPreferencesConfig()
 					.setInt("logout", 0);
 		}
+		
+		int fromQQlogin = MzeatApplication.getInstance().getpPreferencesConfig()
+				.getInt("fromQQlogin", 0);
+		// 注销之后跳到注册页面再返回后跳到主界面
+		if (fromQQlogin == 1) {
+			rb_mycount.setChecked(true);
+			tabHost.setCurrentTabByTag("mycount");
+			MzeatApplication.getInstance().getpPreferencesConfig()
+					.setInt("fromQQlogin", 0);
+		}
+		
 		//注册成功后跳到我的账号
 		else if (logout == 2) {
 			rb_mycount.setChecked(true);
@@ -302,12 +313,11 @@ public class MainActivity extends TabActivity {
 		super.onDestroy();
 		AppManager.getAppManager().finishActivity(this);
 		LogUtil.getLogOnDestroy(TAG);
-		try {
+		if (receiver != null) {
 			unregisterReceiver(receiver);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
 		}
+			
+		
 	}
 	
 	

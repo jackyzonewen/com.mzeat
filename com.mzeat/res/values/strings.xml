@@ -92,7 +92,9 @@
     <string name="mobile_hint">请输入你的手机号码</string>
     <string name="email_hint">请输入你的邮箱</string>
     <string name="acount_hint">请输入你的账号</string>
-
+    <string name="registnewcount">没有账号，请注册新账号</string>
+    <string name="bindmycount">已有账号，请绑定账号</string>
+  <string name="bindcount">绑定账号</string>
     <!-- 好优惠 -->
     <string name="privilege">好优惠</string>
     <string name="nowprice">现价：</string>

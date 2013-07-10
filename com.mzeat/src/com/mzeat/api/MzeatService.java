@@ -265,6 +265,7 @@ public class MzeatService implements IMzeatService {
 		params.add(new BasicNameValuePair("password", password));
 		params.add(new BasicNameValuePair("mobile", mobile));
 		params.add(new BasicNameValuePair("user_name", user_name));
+		params.add(new BasicNameValuePair("qq_id", MzeatApplication.getInstance().getpPreferencesConfig().getString("qq_id", "")));
 		try {
 			Response response = mHttpClient.post(url, params);
 			// Log.e("response", response.toString());

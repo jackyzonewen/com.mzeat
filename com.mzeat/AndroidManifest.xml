@@ -339,6 +339,22 @@
                 <data android:scheme="tencent100278084" />
             </intent-filter>
         </activity>
+        
+        
+                <!-- 腾讯QQ登陆授权 -->
+        <activity
+            android:name="com.tencent.tauth.TAuthView"
+            android:configChanges="keyboardHidden|navigation|orientation"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="auth" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
