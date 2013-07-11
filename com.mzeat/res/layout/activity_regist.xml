@@ -19,6 +19,112 @@
             android:orientation="vertical" >
 
             <LinearLayout
+                android:id="@+id/ll_bindmycount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_shoppingdetail"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tips_bindmycount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="10dp"
+                        android:text="@string/bindmycount"
+                        android:textAppearance="@style/Textcolor.SomberMedium" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:padding="15dp" >
+
+                        <TextView
+                            android:id="@+id/regist_myacount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/regist_acount"
+                            android:textAppearance="@style/Textcolor.SomberSmall" />
+
+                        <EditText
+                            android:id="@+id/tv_mycount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_toRightOf="@id/regist_myacount"
+                            android:background="@null"
+                            android:hint="@string/acount_hint"
+                            android:inputType="textNoSuggestions"
+                            android:textAppearance="@style/Textcolor.SomberSmall" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/graymore" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp" >
+
+                        <TextView
+                            android:id="@+id/regist_mypwd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/regist_pwd"
+                            android:textAppearance="@style/Textcolor.SomberSmall" />
+
+                        <EditText
+                            android:id="@+id/tv_mypwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_toRightOf="@id/regist_mypwd"
+                            android:background="@null"
+                            android:hint="@string/pwd_hint"
+                            android:inputType="textPassword"
+                            android:textAppearance="@style/Textcolor.SomberSmall" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/graymore" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btn_bind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/selector_bindnow" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
@@ -39,8 +145,8 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="10dp"
                         android:text="@string/registnewcount"
-                        android:textAppearance="@style/Textcolor.SomberMedium" 
-                        android:visibility="gone"/>
+                        android:textAppearance="@style/Textcolor.SomberMedium"
+                        android:visibility="gone" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -216,112 +322,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/selector_btn_regist" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_bindmycount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" 
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_shoppingdetail"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/tips_bindmycount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="10dp"
-                        android:text="@string/bindmycount"
-                        android:textAppearance="@style/Textcolor.SomberMedium" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:padding="15dp" >
-
-                        <TextView
-                            android:id="@+id/regist_acount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:text="@string/regist_acount"
-                            android:textAppearance="@style/Textcolor.SomberSmall" />
-
-                        <EditText
-                            android:id="@+id/tv_mycount"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toRightOf="@id/regist_acount"
-                            android:background="@null"
-                            android:hint="@string/acount_hint"
-                            android:inputType="textNoSuggestions"
-                            android:textAppearance="@style/Textcolor.SomberSmall" />
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/graymore" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="15dp" >
-
-                        <TextView
-                            android:id="@+id/regist_pwd"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:text="@string/regist_pwd"
-                            android:textAppearance="@style/Textcolor.SomberSmall" />
-
-                        <EditText
-                            android:id="@+id/tv_mypwd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toRightOf="@id/regist_pwd"
-                            android:background="@null"
-                            android:hint="@string/pwd_hint"
-                            android:inputType="textPassword"
-                            android:textAppearance="@style/Textcolor.SomberSmall" />
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/graymore" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/btn_bind"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/selector_bindnow" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

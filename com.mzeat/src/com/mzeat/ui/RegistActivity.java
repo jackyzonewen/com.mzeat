@@ -4,6 +4,7 @@ import com.mzeat.MzeatApplication;
 import com.mzeat.R;
 import com.mzeat.api.MzeatService;
 import com.mzeat.db.UserDb;
+import com.mzeat.model.BindQQReturn;
 import com.mzeat.model.EditInfoReturn;
 import com.mzeat.model.RegistInfo;
 import com.mzeat.task.GenericTask;
@@ -56,7 +57,7 @@ public class RegistActivity extends BaseActivity {
 	private String rpwd;
 
 	private LoadDataTask mLoadDataTask;
-
+	private BindTask mBindTask;
 	private ImageButton btn_regist;
 	private InputMethodManager imm;
 	int fromQQlogin = 0;
@@ -113,7 +114,14 @@ public class RegistActivity extends BaseActivity {
 			tips_bindnewcount.setVisibility(View.VISIBLE);
 		}
 		
-
+		btn_bind.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				bind();
+			}
+		});
 	}
 
 	private void setViewData() {
@@ -126,6 +134,32 @@ public class RegistActivity extends BaseActivity {
 
 	}
 
+	private boolean checkBindInput() {
+
+		myacount = et_mycount.getText().toString().trim();
+
+		if ("".equals(myacount)) {
+			Toast.makeText(this, "请输入账号。", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+
+
+		
+
+		mypwd = et_mypwd.getText().toString().trim();
+
+		if ("".equals(mypwd) || mypwd.length() < 4) {
+
+			Toast.makeText(this, "密码长度不能少于4位", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+
+		
+		return true;
+
+	}
+	
+	
 	private boolean checkInput() {
 
 		acount = et_acount.getText().toString().trim();
@@ -179,6 +213,136 @@ public class RegistActivity extends BaseActivity {
 
 	}
 
+	
+	
+	ProgressDialog bind_pg;
+	private TaskAdapter mBindTaskListener = new TaskAdapter() {
+
+		@Override
+		public String getName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public void onPreExecute(GenericTask task) {
+			// TODO 任务开始执行，可提供进度条展现
+			
+			bind_pg = ProgressDialog.show(RegistActivity.this,
+					getString(R.string.dialog_tips),
+					getString(R.string.loading), true, true, bind_cancelListener);
+		}
+
+		public void onPostExecute(GenericTask task, TaskResult result) {
+			bind_pg.dismiss();
+			bind_pg = null;
+			// TODO 判断TaskReult的返回值是否ok
+			if (result == TaskResult.OK) {
+				MzeatApplication.getInstance().getpPreferencesConfig()
+						.setString("email", myacount);
+				MzeatApplication.getInstance().getpPreferencesConfig()
+						.setString("pwd", mypwd);
+				
+				Toast.makeText(RegistActivity.this, mBindTask
+						.getBindQQReturn().getInfo(), Toast.LENGTH_SHORT).show();
+
+				Intent intent = new Intent(RegistActivity.this,
+						MainActivity.class);
+				MzeatApplication.getInstance().getpPreferencesConfig()
+				.setInt("loginstate", 1);
+				MzeatApplication.getInstance().getpPreferencesConfig()
+						.setInt("logout", 2);
+				MzeatApplication.getInstance().getpPreferencesConfig()
+				.setInt("fromregist", 1);
+				startActivity(intent);
+				finish();
+			} else if (result == TaskResult.FAILED) {
+			
+				
+				Toast.makeText(RegistActivity.this, mBindTask
+						.getBindQQReturn().getInfo(), Toast.LENGTH_SHORT).show();
+			} else {
+				ShowToast.showError(RegistActivity.this);
+			}
+
+		}
+
+		public void onProgressUpdate(GenericTask task, Object param) {
+			// TODO 如果是下载，可在此显示下载进度
+
+		}
+
+		public void onCancelled(GenericTask task) {
+			// TODO 后台任务被取消的事件回调，适当情况下可以提示用户，如“下载已取消”
+
+		}
+	};
+
+	private BindQQReturn bindQQReturn = new BindQQReturn();
+
+	private class BindTask extends GenericTask {
+
+		@Override
+		protected TaskResult _doInBackground(TaskParams... params) {
+
+			// TODO Auto-generated method stub
+			bindQQReturn = MzeatApplication.getInstance().getService()
+					.getBindQQReturn(myacount, mypwd);
+
+			if (bindQQReturn.getOpen().equals("1")) {
+				return TaskResult.OK;
+			} else if (bindQQReturn.getOpen().equals("0")) {
+				return TaskResult.FAILED;
+			} else {
+				return TaskResult.IO_ERROR;
+			}
+
+		}
+
+		private BindQQReturn getBindQQReturn() {
+			return bindQQReturn;
+		}
+
+	}
+
+	private void bind() {
+
+		/**
+		 * 重要！！需要判断当前任务是否正在运行，否则重复执行会出错，典型的场景就是用户点击登录按钮多次
+		 */
+
+		if (checkBindInput()) {
+			if (null != mBindTask
+					&& mBindTask.getStatus() == GenericTask.Status.RUNNING)
+				return;
+
+			mBindTask = new BindTask();
+			mBindTask.setListener(mBindTaskListener);
+
+			mBindTask.execute();
+
+		}
+	}
+
+	DialogInterface.OnCancelListener bind_cancelListener = new DialogInterface.OnCancelListener() {
+		@Override
+		public void onCancel(DialogInterface arg0) {
+			// TODO Auto-generated method stub
+			bind_clearTask();
+		}
+
+	};
+
+	private void bind_clearTask() {
+		// TODO Auto-generated method stub
+		if (null != mBindTask
+				&& mBindTask.getStatus() == GenericTask.Status.RUNNING) {
+			mBindTask.cancel(true);
+			mBindTask = null;
+		}
+
+	}
+
+	
 	ProgressDialog pg;
 	private TaskAdapter mTaskListener = new TaskAdapter() {
 
@@ -305,6 +469,7 @@ public class RegistActivity extends BaseActivity {
 
 	}
 
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub

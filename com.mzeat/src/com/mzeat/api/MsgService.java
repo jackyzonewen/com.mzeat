@@ -66,7 +66,7 @@ public class MsgService extends Service {
 				.getInt("isMsg", 0);
 		if (tipsVoice == null) {
 			tipsVoice = new MediaPlayer();
-			tipsVoice = MediaPlayer.create(this, R.raw.ring);
+			tipsVoice = MediaPlayer.create(this, R.raw.system);
 			tipsVoice.setLooping(false);
 		}
 	}
@@ -144,12 +144,12 @@ public class MsgService extends Service {
 	private void isVoice() {
 
 		if (tipsVoice != null) {
-			tipsVoice = MediaPlayer.create(this, R.raw.ring);
+			tipsVoice = MediaPlayer.create(this, R.raw.system);
 			tipsVoice.setLooping(false);
 			tipsVoice.start();
 		} else {
 			tipsVoice = new MediaPlayer();
-			tipsVoice = MediaPlayer.create(this, R.raw.ring);
+			tipsVoice = MediaPlayer.create(this, R.raw.system);
 			tipsVoice.setLooping(false);
 			tipsVoice.start();
 		}
@@ -178,9 +178,9 @@ public class MsgService extends Service {
 		// 0
 		PendingIntent pendingIntent = PendingIntent.getActivity(
 				MsgService.this, 0, intent, 0);
-
-		notification.defaults = Notification.DEFAULT_SOUND;
-		notification.defaults |= Notification.DEFAULT_VIBRATE;  
+		
+		//notification.defaults = Notification.DEFAULT_SOUND;
+		//notification.defaults |= Notification.DEFAULT_VIBRATE;  
 		// 设定事件信息
 		notification.setLatestEventInfo(getApplicationContext(), "梅州城市通", "你有"
 				+ count + "条未读信息", pendingIntent);
@@ -353,7 +353,7 @@ public class MsgService extends Service {
 		if (count != 0) {
 			if (!isTopActivity(MsgService.this)) {
 				setNotification();
-				//isVoice();
+				isVoice();
 			}
 		}
 		

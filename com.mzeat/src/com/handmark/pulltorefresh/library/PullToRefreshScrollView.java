@@ -1,6 +1,5 @@
 package com.handmark.pulltorefresh.library;
 
-
 import com.mzeat.R;
 
 import android.annotation.TargetApi;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.ScrollView;
 
 public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
-
 	public PullToRefreshScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}

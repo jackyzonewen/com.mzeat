@@ -2,6 +2,7 @@ package com.mzeat.ui;
 
 import java.util.ArrayList;
 
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.mzeat.MzeatApplication;
 import com.mzeat.R;
 import com.mzeat.db.My_shareDb;
@@ -39,7 +40,7 @@ public class MessageActivity extends BaseActivity {
 	private My_commentAdapter mCommentAdapter;
 
 	MyReceiver receiver;
-
+	PullToRefreshScrollView sl_message;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -134,6 +135,8 @@ public class MessageActivity extends BaseActivity {
 	private void initView() {
 		// TODO Auto-generated method stub
 		findViewById(R.id.btn_back).setVisibility(View.GONE);
+		sl_message = (PullToRefreshScrollView) findViewById(R.id.sl_message);
+		
 		tv_title = (TextView) findViewById(R.id.tv_title);
 		tv_title.setText(R.string.message);
 		

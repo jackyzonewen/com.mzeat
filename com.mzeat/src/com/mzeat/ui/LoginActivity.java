@@ -178,6 +178,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		public void onPreExecute(GenericTask task) {
 			// TODO 任务开始执行，可提供进度条展现
+			
 			pg_qq = ProgressDialog.show(LoginActivity.this,
 					getString(R.string.dialog_tips),
 					getString(R.string.loading), true, true, qqcancelListener);
@@ -204,6 +205,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 				Intent nIntent = new Intent(LoginActivity.this,MainActivity.class);
 				MzeatApplication.getInstance().getpPreferencesConfig().setInt("fromQQlogin", 1);
+				MzeatApplication.getInstance().getpPreferencesConfig().setInt("fromregist", 1);
 				startActivity(nIntent);
 				//Intent intent = new Intent();
 				//intent.putExtra("back", 0);
@@ -215,7 +217,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				Intent nIntent = new Intent(LoginActivity.this,RegistActivity.class);
 				nIntent.putExtra("fromQQlogin", 1);
 				startActivity(nIntent);
-				ShowToast.showLoginFaile(LoginActivity.this);
+				//ShowToast.showLoginFaile(LoginActivity.this);
+				ShowToast.showMessage(LoginActivity.this, "没有绑定账号，请绑定账号。");
 			} else {
 				ShowToast.showError(LoginActivity.this);
 			}
@@ -246,7 +249,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					.getQq_Login_Return(qq_id);
 			if (qq_Login_Return.getResulttype().equals("1")) {
 				return TaskResult.OK;
-			} else if (user.getUser_login_status().equals("0")) {
+			} else if (qq_Login_Return.getResulttype().equals("0")) {
 				return TaskResult.FAILED;
 			} else {
 				return TaskResult.IO_ERROR;
@@ -544,22 +547,24 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private AuthReceiver receiver;
 
 	public String mAccessToken , mOpenId , mError , mClientId , mExpiresIn;
-	public static final int PROGRESS = 0;
+	//public static final int PROGRESS = 0;
 
-	@Override
-	protected Dialog onCreateDialog(int id)
-	{
-		Dialog dialog = null;
-		switch (id)
-		{
-			case PROGRESS:
-				dialog = new ProgressDialog(this);
-				((ProgressDialog) dialog).setMessage("请求中,请稍等...");
-				break;
-		}
-		return dialog;
-	}
-
+	//@Override
+	//protected Dialog onCreateDialog(int id)
+	//{
+	//	Dialog dialog = null;
+	//	switch (id)
+	//	{
+	//		case PROGRESS:
+	//			dialog = new ProgressDialog(this);
+	//			((ProgressDialog) dialog).setMessage("请求中,请稍等...");
+	//			break;
+	//	}
+	//	return dialog;
+	//}
+	
+	ProgressDialog PROGRESS;
+	
 	public class AuthReceiver extends BroadcastReceiver
 	{
 		private static final String TAG = "AuthReceiver";
@@ -567,6 +572,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
+			
+			
 			Bundle exts = intent.getExtras();
 			String raw = exts.getString("raw");
 			String access_token = exts.getString(TencentOpenHost.ACCESS_TOKEN);
@@ -581,7 +588,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				mExpiresIn = expires_in;
 				if ( !isFinishing() )
 				{
-					showDialog(PROGRESS);
+					//showDialog(PROGRESS);
+					PROGRESS = ProgressDialog.show(LoginActivity.this,
+							null,
+							"请求中,请稍等...");
 				}
 
 				TencentOpenAPI.openid(access_token, new Callback()
@@ -600,11 +610,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 							@Override
 							public void run()
 							{
-								dismissDialog(PROGRESS);
+								PROGRESS.dismiss();
+								//dismissDialog(PROGRESS);
 								mOpenId = ((OpenId) obj).getOpenId();
 								mClientId = ((OpenId) obj).getClientId();
-								MzeatApplication.getInstance().getpPreferencesConfig().getString("qq_id", mOpenId);
-								
+								MzeatApplication.getInstance().getpPreferencesConfig().setString("qq_id", mOpenId);
 								qq_id = mOpenId;
 								getQQ_login();
 
@@ -621,7 +631,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 							@Override
 							public void run()
 							{
-								dismissDialog(PROGRESS);
+								PROGRESS.dismiss();
+								//dismissDialog(PROGRESS);
 								TDebug.msg(msg, getApplicationContext());
 								ShowToast.showMessage(LoginActivity.this, "QQ登录失败。");
 							}

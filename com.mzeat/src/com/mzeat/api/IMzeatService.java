@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.mzeat.api.service.PostersResponse;
+import com.mzeat.model.BindQQReturn;
 import com.mzeat.model.CardActivate;
 import com.mzeat.model.ChangeReturn;
 import com.mzeat.model.CommentReturn;
@@ -70,4 +71,6 @@ public interface IMzeatService {
 
 	
 	QQ_Login_Return getQq_Login_Return(String qq_id);
+	
+	BindQQReturn getBindQQReturn(String email,String  pwd);
 }

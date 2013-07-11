@@ -25,6 +25,8 @@ import com.mzeat.model.MyOrderItem;
 
 import com.mzeat.model.MyOrederGood;
 
+import com.mzeat.model.BaseModel;
+import com.mzeat.model.BindQQReturn;
 import com.mzeat.model.CardActivate;
 import com.mzeat.model.Change;
 import com.mzeat.model.ChangeReturn;
@@ -1100,6 +1102,44 @@ public class MzeatService implements IMzeatService {
 			return qq_Login_Return;
 		}
 		return qq_Login_Return;
+	}
+
+	@Override
+	public BindQQReturn getBindQQReturn(String email, String pwd) {
+		// TODO Auto-generated method stub
+		BindQQReturn bindQQReturn = new BindQQReturn();
+		String url = String.format("%s/index.php?", ServerUrl);
+		ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
+		params.add(new BasicNameValuePair("act", "syncbind"));
+		params.add(new BasicNameValuePair("r_type", "1"));
+		params.add(new BasicNameValuePair("email", email));
+		params.add(new BasicNameValuePair("pwd", pwd));
+		params.add(new BasicNameValuePair("login_type", "qq"));
+		params.add(new BasicNameValuePair("qq_id", MzeatApplication.getInstance().getpPreferencesConfig().getString("qq_id", "")));
+
+		try {
+			Response response = mHttpClient.post(url, params);
+			JSONObject jobj = response.asJSONObject();
+			
+			 Log.e("jobj", jobj.toString());
+			String code = jobj.getString("return");
+			
+			
+
+			if ( code.equals("1")) {
+				bindQQReturn.setOpen("1");
+				bindQQReturn.setInfo(jobj.getString("info"));
+			}else {
+				bindQQReturn.setOpen("0");
+				bindQQReturn.setInfo(jobj.getString("info"));
+			} 
+		} catch (Exception ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
+			bindQQReturn.setOpen("2");
+			return bindQQReturn;
+		}
+		return bindQQReturn;
 	}
 
 }
