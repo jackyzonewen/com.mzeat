@@ -111,6 +111,7 @@
     <string name="count">总结算价：</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+    <string name="tips_cart">还没有商品哦，去看看吧！</string>
 
     <!-- 确认订单 -->
     <string name="num">数量：</string>
@@ -162,4 +163,5 @@
   <string name="havecomment">有了新的评论。</string>
    <string name="my_comment">你在微分享：</string>
     <string name="havereply">的评论有了新的回复。</string>
+    <string name="tips_message">还没有消息，先去逛分享吧！</string>
 </resources>

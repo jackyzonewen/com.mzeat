@@ -15,14 +15,40 @@
         android:id="@+id/sl_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ptr:ptrMode="pullDownFromTop"
-         ptr:ptrAnimationStyle="flip"
-        >
+        ptr:ptrMode="pullDownFromTop" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/ll_tips"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <LinearLayout
+                    android:id="@+id/ll_gotoshare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="100dp"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/tips_message" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/tips_message" />
+                </LinearLayout>
+            </LinearLayout>
 
             <com.mzeat.ui.widget.MyListView
                 android:id="@+id/lv_my_share"

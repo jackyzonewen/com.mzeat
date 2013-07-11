@@ -26,7 +26,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ShopCartActivity extends BaseActivity {
@@ -44,6 +46,10 @@ public class ShopCartActivity extends BaseActivity {
 	float oldmoney = 0;
 	private ImageButton btn_submit;
 	MyReceiver receiver;
+	
+	LinearLayout ll_tips;
+	LinearLayout ll_gotoprivilege;
+	RelativeLayout ll_bottom;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +98,20 @@ public class ShopCartActivity extends BaseActivity {
 				}
 			}
 		});
+		
+		ll_tips = (LinearLayout) findViewById(R.id.ll_tips);
+		ll_bottom = (RelativeLayout) findViewById(R.id.ll_bottom);
+		ll_gotoprivilege = (LinearLayout) findViewById(R.id.ll_gotoprivilege);
+		ll_gotoprivilege.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(ShopCartActivity.this, PrivilegeActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -109,6 +129,11 @@ public class ShopCartActivity extends BaseActivity {
 		mDb.closeDB();
 		mAdapter.clear();
 		if (mItem.size() != 0) {
+			
+			ll_bottom.setVisibility(View.VISIBLE);
+			lv_cart.setVisibility(View.VISIBLE);
+			ll_tips.setVisibility(View.GONE);
+			btn_submit.setVisibility(View.VISIBLE);
 			mAdapter.setDataList(mItem);
 			lv_cart.setAdapter(mAdapter);
 
@@ -116,6 +141,12 @@ public class ShopCartActivity extends BaseActivity {
 				oldmoney += Float.valueOf(mItem.get(i).getCount());
 			}
 			tv_count.setText("￥" + String.valueOf(oldmoney));
+		}else {
+
+			ll_bottom.setVisibility(View.GONE);
+			lv_cart.setVisibility(View.GONE);
+			ll_tips.setVisibility(View.VISIBLE);
+			btn_submit.setVisibility(View.GONE);
 		}
 
 	}
@@ -136,8 +167,14 @@ public class ShopCartActivity extends BaseActivity {
 			//num = bundle.getString("num");
 			money = bundle.getString("money");
 
+			
 			tv_count.setText("￥" + money);
-
+			if (money.equals("0.0")) {
+				ll_bottom.setVisibility(View.GONE);
+				lv_cart.setVisibility(View.GONE);
+				ll_tips.setVisibility(View.VISIBLE);
+				btn_submit.setVisibility(View.GONE);
+			}
 		}
 
 		public MyReceiver() {

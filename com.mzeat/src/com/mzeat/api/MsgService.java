@@ -171,16 +171,16 @@ public class MsgService extends Service {
 				"梅州城市通", System.currentTimeMillis());
 		Intent intent = new Intent(MsgService.this, MainActivity.class);
 		// intent.putExtra("formnotice", 1);
-		
+
 		MzeatApplication.getInstance().getpPreferencesConfig()
 				.setInt("fromnotice", 1);
 		// 指定一个跳转的intent
 		// 0
 		PendingIntent pendingIntent = PendingIntent.getActivity(
 				MsgService.this, 0, intent, 0);
-		
-		//notification.defaults = Notification.DEFAULT_SOUND;
-		//notification.defaults |= Notification.DEFAULT_VIBRATE;  
+
+		// notification.defaults = Notification.DEFAULT_SOUND;
+		// notification.defaults |= Notification.DEFAULT_VIBRATE;
 		// 设定事件信息
 		notification.setLatestEventInfo(getApplicationContext(), "梅州城市通", "你有"
 				+ count + "条未读信息", pendingIntent);
@@ -281,8 +281,8 @@ public class MsgService extends Service {
 										.containsAll(newMy_shares);
 								if (!sendnotice) {
 									sendNotice();
-								} else{ // 再比较我的评论的回复
-								
+								} else { // 再比较我的评论的回复
+
 									U_commentlist_itemDb u_commentlist_itemDb = new U_commentlist_itemDb(
 											MsgService.this);
 									ArrayList<U_commentlist_item> oldItems = u_commentlist_itemDb
@@ -301,7 +301,7 @@ public class MsgService extends Service {
 						}
 					}
 
-				}else {
+				} else {
 					sendNotice();
 				}
 
@@ -356,7 +356,6 @@ public class MsgService extends Service {
 				isVoice();
 			}
 		}
-		
 
 		// 刷新主页面的消息数
 		Intent intent = new Intent();

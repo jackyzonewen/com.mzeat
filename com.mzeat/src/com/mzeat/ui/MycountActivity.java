@@ -422,7 +422,12 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 			MzeatApplication.getInstance().getpPreferencesConfig()
 					.setInt("fromregist", 0);
 		}
-
+		mUserDb = new UserDb(MycountActivity.this);
+		user = mUserDb.getUser();
+		mUserDb.closeDB();
+		if (user.getUid() != null) {
+			setViewData();
+		}
 		// 从登陆页面登陆成功跳转到我的账号
 		// Intent intent = getIntent();
 		// intent.getIntExtra("fromlogin", 0);
@@ -436,10 +441,8 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		// }
 
 		// 其他界面跳转到我的账号
-		mUserDb = new UserDb(MycountActivity.this);
-		user = mUserDb.getUser();
-		mUserDb.closeDB();
-		setViewData();
+		
+		
 
 		networkChange = new NetworkChange();
 		IntentFilter filter = new IntentFilter();

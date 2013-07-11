@@ -1,5 +1,6 @@
 package com.handmark.pulltorefresh.library;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.mzeat.R;
 
 import android.annotation.TargetApi;
@@ -11,10 +12,22 @@ import android.view.View;
 import android.widget.ScrollView;
 
 public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
+	
+	
 	public PullToRefreshScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		setDisableScrollingWhileRefreshing(true);
+	}
+	public PullToRefreshScrollView(Context context) {
+		super(context);
+		setDisableScrollingWhileRefreshing(true);
 	}
 
+
+	public PullToRefreshScrollView(Context context, Mode mode) {
+		super(context, mode);
+		setDisableScrollingWhileRefreshing(true);
+	}
 	@Override
 	protected ScrollView createRefreshableView(Context context,
 			AttributeSet attrs) {
