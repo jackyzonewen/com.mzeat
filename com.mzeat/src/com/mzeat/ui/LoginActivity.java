@@ -167,7 +167,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		return true;
 	}
 
-	ProgressDialog pg_qq;
+	Dialog pg_qq;
 	private TaskAdapter mGetCountTaskListener = new TaskAdapter() {
 
 		@Override
@@ -180,8 +180,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			// TODO 任务开始执行，可提供进度条展现
 			
 			pg_qq = ProgressDialog.show(LoginActivity.this,
-					getString(R.string.dialog_tips),
-					getString(R.string.loading), true, true, qqcancelListener);
+					null,
+					"请求中,请稍等...", true, true, qqcancelListener);
 		}
 
 		public void onPostExecute(GenericTask task, TaskResult result) {
@@ -202,7 +202,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				.setInt("isMsg", 1);
 				startService(mIntent);
 				
-
+				/**
 				Intent nIntent = new Intent(LoginActivity.this,MainActivity.class);
 				MzeatApplication.getInstance().getpPreferencesConfig().setInt("fromQQlogin", 1);
 				MzeatApplication.getInstance().getpPreferencesConfig().setInt("fromregist", 1);
@@ -211,8 +211,60 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				//intent.putExtra("back", 0);
 				//setResult(1, intent);
 				finish();
+				**/
+				
+				int fromprivilege = MzeatApplication.getInstance()
+						.getpPreferencesConfig().getInt("fromprivilege", 0);
+				if (fromprivilege == 1) {
+					MzeatApplication.getInstance().getpPreferencesConfig()
+							.setInt("fromprivilege", 0);
+					finish();
+				}
+
+				int fromshare = MzeatApplication.getInstance()
+						.getpPreferencesConfig().getInt("fromshare", 0);
+				if (fromshare == 1) {
+					MzeatApplication.getInstance().getpPreferencesConfig()
+							.setInt("fromshare", 0);
+					Intent intent = new Intent(LoginActivity.this, CommentActivity.class);
+					startActivity(intent);
+					finish();
+				}
+				
+				int fromsharelist = MzeatApplication.getInstance()
+						.getpPreferencesConfig().getInt("fromsharelist", 0);
+				if (fromsharelist == 1) {
+					MzeatApplication.getInstance().getpPreferencesConfig()
+							.setInt("fromsharelist", 0);
+					Intent intent = new Intent(LoginActivity.this, PubShareActivity.class);
+					startActivity(intent);
+					finish();
+				}
+
+				
+				MzeatApplication.getInstance()
+						.getpPreferencesConfig().setInt("fromQQ_login", 1);
+				// 保证跳转到我的账号
+				MzeatApplication.getInstance().getpPreferencesConfig()
+						.setInt("logout", 0);
+				Intent intent = new Intent();
+				intent.putExtra("back", 0);
+				Log.e("frommycart", String.valueOf(frommycart));
+				Log.e("frommessage", String.valueOf(frommessage));
+				if (frommycart == 1) {
+					setResult(3, intent);
+				}else if (frommessage == 1) {
+					setResult(4, intent);
+				}else {
+					setResult(1, intent);
+					MzeatApplication.getInstance()
+					.getpPreferencesConfig().setInt("fromQQ_login", 0);
+				}
+				
+				finish();
 
 				ShowToast.showLoginSuccess(LoginActivity.this);
+
 			} else if (result == TaskResult.FAILED) {
 				Intent nIntent = new Intent(LoginActivity.this,RegistActivity.class);
 				nIntent.putExtra("fromQQlogin", 1);

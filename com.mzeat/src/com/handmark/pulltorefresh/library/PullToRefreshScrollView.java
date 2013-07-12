@@ -1,33 +1,43 @@
 package com.handmark.pulltorefresh.library;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.internal.EmptyViewMethodAccessor;
+import com.handmark.pulltorefresh.library.internal.LoadingLayout;
 import com.mzeat.R;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
 public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
-	
-	
+
+	private LoadingLayout mHeaderLoadingView;
+	private LoadingLayout mFooterLoadingView;
+
+	private FrameLayout mLvFooterLoadingFrame;
+
 	public PullToRefreshScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setDisableScrollingWhileRefreshing(true);
 	}
+
 	public PullToRefreshScrollView(Context context) {
 		super(context);
 		setDisableScrollingWhileRefreshing(true);
 	}
 
-
 	public PullToRefreshScrollView(Context context, Mode mode) {
 		super(context, mode);
 		setDisableScrollingWhileRefreshing(true);
 	}
+
 	@Override
 	protected ScrollView createRefreshableView(Context context,
 			AttributeSet attrs) {

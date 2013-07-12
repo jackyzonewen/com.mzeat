@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.mzeat.AppException;
 import com.mzeat.MzeatApplication;
 import com.mzeat.PreferencesConfig;
@@ -52,6 +55,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class MycountActivity extends BaseActivity implements OnClickListener {
@@ -92,6 +96,10 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 	private String protraitPath;
 	private final static int CROP = 200;
 
+	PullToRefreshScrollView sl_mycount;
+	ScrollView mScrollView;
+	
+	int pulldown = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -125,7 +133,19 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		rl_myorder = (RelativeLayout) findViewById(R.id.rl_myorder);
 		rl_myorder.setOnClickListener(this);
 		img_user.setOnClickListener(editerClickListener);
+		
+		sl_mycount = (PullToRefreshScrollView) findViewById(R.id.sl_mycount);
+		sl_mycount.setOnRefreshListener(new OnRefreshListener<ScrollView>() {
 
+			@Override
+			public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
+				// TODO Auto-generated method stub
+				
+				pulldown = 1;
+				login();
+			}
+		});
+		mScrollView = sl_mycount.getRefreshableView();
 	}
 
 	private void setViewData() {
@@ -380,6 +400,13 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 			mConfig.setString("email", "");
 			mConfig.setString("pwd", "");
 			mConfig.setInt("loginstate", 0);
+			
+			mUserDb = new UserDb(MycountActivity.this);
+			mUserDb.deleteAll();
+			mUserDb.closeDB();
+		
+			user = null;
+			
 			intent = new Intent(MycountActivity.this, LoginActivity.class);
 			startActivityForResult(intent, 1);
 			MzeatApplication.getInstance().getpPreferencesConfig()
@@ -412,9 +439,7 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 
-		// Log.e("fromregist",
-		// String.valueOf(MzeatApplication.getInstance()
-		// .getpPreferencesConfig().getInt("fromregist", 0)));
+	
 		// 从注册页面注册成功跳转到我的账号
 		if (MzeatApplication.getInstance().getpPreferencesConfig()
 				.getInt("fromregist", 0) == 1) {
@@ -422,28 +447,14 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 			MzeatApplication.getInstance().getpPreferencesConfig()
 					.setInt("fromregist", 0);
 		}
-		mUserDb = new UserDb(MycountActivity.this);
-		user = mUserDb.getUser();
-		mUserDb.closeDB();
-		if (user.getUid() != null) {
-			setViewData();
+		
+		if (MzeatApplication.getInstance().getpPreferencesConfig()
+				.getInt("fromQQ_login", 0) == 1&& reflash == true) {
+			login();
+			MzeatApplication.getInstance().getpPreferencesConfig()
+					.setInt("fromQQ_login", 0);
 		}
-		// 从登陆页面登陆成功跳转到我的账号
-		// Intent intent = getIntent();
-		// intent.getIntExtra("fromlogin", 0);
-		// Log.e("fromlogin", String.valueOf(intent.getIntExtra("fromlogin",
-		// 0)));
-		// if (intent.getIntExtra("fromlogin", 0) == 1) {
-		// mUserDb = new UserDb(MycountActivity.this);
-		// user = mUserDb.getUser();
-		// mUserDb.closeDB();
-		// setViewData();
-		// }
-
-		// 其他界面跳转到我的账号
 		
-		
-
 		networkChange = new NetworkChange();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -488,14 +499,28 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 
 		public void onPreExecute(GenericTask task) {
 			// TODO 任务开始执行，可提供进度条展现
-			pg = ProgressDialog.show(MycountActivity.this,
-					getString(R.string.dialog_tips), "刷新账号信息", true, true,
-					cancelListener);
+			
+			if (pulldown == 1) {
+				sl_mycount.setRefreshing(true);
+				sl_mycount.setDisableScrollingWhileRefreshing(true);
+			}else {
+				pg = ProgressDialog.show(MycountActivity.this,
+						getString(R.string.dialog_tips), "刷新账号信息", true, true,
+						cancelListener);
+			}
+			
 		}
 
 		public void onPostExecute(GenericTask task, TaskResult result) {
-			pg.dismiss();
-			pg = null;
+			
+			if (pulldown == 1) {
+				sl_mycount.onRefreshComplete();
+				pulldown = 0;
+			}else {
+				pg.dismiss();
+				pg = null;
+			}
+			
 			// TODO 判断TaskReult的返回值是否ok
 			if (result == TaskResult.OK) {
 
@@ -698,13 +723,24 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 			if (super.success == true) {
 				if (!reflash) {
 					login();
+				}else {
+					mUserDb = new UserDb(MycountActivity.this);
+					user = mUserDb.getUser();
+					mUserDb.closeDB();
+					if (user.getUid() != null) {
+						setViewData();
+					}
 				}
 
 				super.success = false;
-				// Log.e("loaddata()", "loaddata()");
 
 			} else {
-
+				mUserDb = new UserDb(MycountActivity.this);
+				user = mUserDb.getUser();
+				mUserDb.closeDB();
+				if (user.getUid() != null) {
+					setViewData();
+				}
 			}
 		}
 
@@ -714,13 +750,20 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			mLoadDataTask = null;
-			Intent MyIntent = new Intent(Intent.ACTION_MAIN);
-			MyIntent.addCategory(Intent.CATEGORY_HOME);
-			startActivity(MyIntent);
-			// Log.e("back", "back");
+			
+			if (null != mLoadDataTask) {
+				mLoadDataTask.cancel(true);
+				mLoadDataTask.setListener(null);
+				mLoadDataTask = null;
+				sl_mycount.onRefreshComplete();
+			} else {
+				Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+				MyIntent.addCategory(Intent.CATEGORY_HOME);
+				startActivity(MyIntent);
+			}
+			
 		}
-		return super.onKeyDown(keyCode, event);
+		return true;
 	}
 
 	@Override

@@ -115,11 +115,14 @@ public class MainActivity extends TabActivity {
 
 
 				} else {
-					if (MzeatApplication.getInstance().getpPreferencesConfig().getInt("count", 0 )!= 0) {
-						count = MzeatApplication.getInstance().getpPreferencesConfig().getInt("count", 0);
+					count = MzeatApplication.getInstance().getpPreferencesConfig().getInt("count", 0);
+					if (count!= 0) {
+						
 						tv_tips.setText(String.valueOf(count));
 						tv_tips.setVisibility(View.VISIBLE);
 
+					}else {
+						tv_tips.setVisibility(View.GONE);
 					}
 				}
 			}

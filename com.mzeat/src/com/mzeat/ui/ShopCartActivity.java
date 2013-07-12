@@ -6,14 +6,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.JsonArray;
 import com.mzeat.MzeatApplication;
 import com.mzeat.R;
 import com.mzeat.db.MycartDb;
 import com.mzeat.model.ConfirmOrderItem;
 import com.mzeat.model.PrivilegeItem;
+import com.mzeat.model.Shopping;
 import com.mzeat.ui.adapter.MyCartAdapter;
 import com.mzeat.util.JsonUtil;
+import com.mzeat.util.ShowToast;
 
 import android.R.array;
 import android.content.BroadcastReceiver;
@@ -46,10 +47,13 @@ public class ShopCartActivity extends BaseActivity {
 	float oldmoney = 0;
 	private ImageButton btn_submit;
 	MyReceiver receiver;
-	
+
 	LinearLayout ll_tips;
 	LinearLayout ll_gotoprivilege;
 	RelativeLayout ll_bottom;
+	
+	public final static String SER_KEY = "ordercart";
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,34 +75,28 @@ public class ShopCartActivity extends BaseActivity {
 				ArrayList<ConfirmOrderItem> orderItems = new ArrayList<ConfirmOrderItem>();
 				if (mItem.size() > 0) {
 					for (int i = 0; i < mItem.size(); i++) {
-						ConfirmOrderItem item = new ConfirmOrderItem(mItem.get(i).getGoods_id(),mItem.get(i).getNum(),mItem.get(i).getCount());
+						ConfirmOrderItem item = new ConfirmOrderItem(mItem.get(
+								i).getGoods_id(), mItem.get(i).getNum(), mItem
+								.get(i).getCount(),mItem.get(i).getCur_price(),mItem.get(i).getImage(),mItem.get(i).getTitle());
 						orderItems.add(item);
 
 					}
-					JSONArray ja = new JSONArray();
 					
-					for (int i=0;i<orderItems.size();i++) {
-					    ja.put(orderItems.get(i).getJSONObject());
-					}
-					JSONObject jsonObject = new JSONObject();
-					oldmoney = 0.0f;
-					for (int i = 0; i < mItem.size(); i++) {
-						oldmoney += Float.valueOf(mItem.get(i).getCount());
-					}
-					try {
-						jsonObject.put("total_prices", String.valueOf(oldmoney));
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					ja.put(jsonObject);
-					Log.e("testjsonarray",ja.toString());
+					Intent intent = new Intent(ShopCartActivity.this,
+							OrderConfirmActivity.class);
 					
-	
+					Bundle mBundle = new Bundle();
+					mBundle.putSerializable(SER_KEY, orderItems);
+					intent.putExtras(mBundle);
+					intent.putExtra("total_count", String.valueOf(oldmoney));
+					startActivity(intent);
+
+				}else {
+					ShowToast.showMessage(ShopCartActivity.this, "没有购买商品");
 				}
 			}
 		});
-		
+
 		ll_tips = (LinearLayout) findViewById(R.id.ll_tips);
 		ll_bottom = (RelativeLayout) findViewById(R.id.ll_bottom);
 		ll_gotoprivilege = (LinearLayout) findViewById(R.id.ll_gotoprivilege);
@@ -129,7 +127,7 @@ public class ShopCartActivity extends BaseActivity {
 		mDb.closeDB();
 		mAdapter.clear();
 		if (mItem.size() != 0) {
-			
+
 			ll_bottom.setVisibility(View.VISIBLE);
 			lv_cart.setVisibility(View.VISIBLE);
 			ll_tips.setVisibility(View.GONE);
@@ -141,7 +139,7 @@ public class ShopCartActivity extends BaseActivity {
 				oldmoney += Float.valueOf(mItem.get(i).getCount());
 			}
 			tv_count.setText("￥" + String.valueOf(oldmoney));
-		}else {
+		} else {
 
 			ll_bottom.setVisibility(View.GONE);
 			lv_cart.setVisibility(View.GONE);
@@ -164,10 +162,9 @@ public class ShopCartActivity extends BaseActivity {
 
 			Bundle bundle = intent.getExtras();
 
-			//num = bundle.getString("num");
+			// num = bundle.getString("num");
 			money = bundle.getString("money");
 
-			
 			tv_count.setText("￥" + money);
 			if (money.equals("0.0")) {
 				ll_bottom.setVisibility(View.GONE);
@@ -182,6 +179,7 @@ public class ShopCartActivity extends BaseActivity {
 		}
 
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -193,6 +191,7 @@ public class ShopCartActivity extends BaseActivity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub

@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-         android:padding="10dp">
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
 
         <ImageView
             android:id="@+id/img_cart"
@@ -16,8 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/img_food" />
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/cart_title"
@@ -28,8 +26,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/img_cart"
             android:ellipsize="end"
-            android:lines="1"
-            android:text="富试通单反相机"
+            android:maxLines="3"
             android:textAppearance="@style/Textcolor.GreenMedium" />
 
         <TextView
@@ -37,10 +34,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cart_title"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/img_cart"
             android:text="@string/singelprice"
-            android:layout_marginBottom="8dp"
             android:textAppearance="@style/Textcolor.SomberMedium" />
 
         <TextView
@@ -49,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/cart_title"
             android:layout_toRightOf="@id/singleprice"
-            android:text="1000"
             android:textAppearance="@style/Textcolor.SomberMedium" />
 
         <TextView
@@ -57,9 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cart_title"
+            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/tv_singleprice"
             android:text="@string/num"
-            android:layout_marginLeft="5dp"
             android:textAppearance="@style/Textcolor.SomberMedium" />
 
         <TextView
@@ -68,8 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/cart_title"
             android:layout_toRightOf="@id/num"
-            android:text="100"
             android:textAppearance="@style/Textcolor.SomberMedium" />
+
         <TextView
             android:id="@+id/count"
             android:layout_width="wrap_content"
@@ -79,18 +75,19 @@
             android:layout_toRightOf="@id/img_cart"
             android:text="@string/productcount"
             android:textAppearance="@style/Textcolor.RedMedium" />
-        
+
         <TextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/singleprice"
             android:layout_toRightOf="@id/count"
-            android:text="100"
             android:textAppearance="@style/Textcolor.RedMedium" />
     </RelativeLayout>
-    <View  android:layout_width="match_parent"
+
+    <View
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray"/>
+        android:background="@color/gray" />
 
 </LinearLayout>

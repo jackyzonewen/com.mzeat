@@ -83,9 +83,9 @@ public class ShareDetailActivity extends BaseActivity {
 		
 		 parser = SmileyParser.getInstance();
 		initView();
-
 		setViewData();
 		loaddata();
+		
 	}
 
 	private void setViewData() {
@@ -248,14 +248,19 @@ public class ShareDetailActivity extends BaseActivity {
 				}
 
 				ArrayList<String> smallImg = new ArrayList<String>();
-				for (int i = 0; i < shareDetail.getImgs().size(); i++) {
-					String img = shareDetail.getImgs().get(i).getSmall_img();
-					smallImg.add(img);
+				if (shareDetail.getImgs() != null) {
+					for (int i = 0; i < shareDetail.getImgs().size(); i++) {
+						String img = shareDetail.getImgs().get(i).getSmall_img();
+						smallImg.add(img);
+					}
 				}
+					
+				
+				
 
 				ArrayList<ShareItemImgs> imgs = (ArrayList<ShareItemImgs>) shareDetail
 						.getImgs();
-				if (imgs.size() > 0) {
+				if (imgs != null) {
 					gridViewAdapter = new GridViewAdapter(
 							ShareDetailActivity.this, imgs);
 					gridViewAdapter.setDataList(smallImg);

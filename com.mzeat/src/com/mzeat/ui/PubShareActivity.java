@@ -223,7 +223,7 @@ public class PubShareActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		
 	}
-	
+	private ArrayList<File> imgfiles;
 	private boolean checkInput(){
 		
 		content = et_content.getText().toString().trim();
@@ -235,14 +235,16 @@ public class PubShareActivity extends BaseActivity {
 		} 
 		
 		Iterator<Entry<Integer, File>> iter = map.entrySet().iterator(); 
+		imgfiles = new ArrayList<File>();
 		while (iter.hasNext()) { 
+			
 		    Entry<Integer, File> entry = iter.next(); 
 		    Object key = entry.getKey(); 
 		    File val = entry.getValue(); 
-		    files.add( val);
+		    imgfiles.add( val);
 		} 
 		Log.e("files",String.valueOf(files.size()));
-		if (files.size() == 0) {
+		if (imgfiles.size() == 0) {
 			ShowToast.showMessage(this, "请选择分享照片！");
 		
 			return false;
@@ -329,7 +331,7 @@ public class PubShareActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			title = et_title.getText().toString().trim();
 			pubShare = MzeatApplication.getInstance().getService()
-					.getPubShare(content, title, files);
+					.getPubShare(content, title, imgfiles);
 			int code = Integer.valueOf(pubShare.getOpen());
 			if (code == MzeatService.RESULT_OK) {
 
@@ -498,10 +500,8 @@ public class PubShareActivity extends BaseActivity {
 							int which = (Integer) v.getTag();
 							ll_img.removeView(img);
 							map.remove(v.getTag());
-							Log.e("which",String.valueOf(which));
-							//tag = tag -1;
+							Log.e("which",String.valueOf(map.size()));
 							
-							Log.e("files",String.valueOf(files.size()));
 						}
 					});
 

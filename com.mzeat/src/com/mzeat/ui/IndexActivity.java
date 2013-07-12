@@ -418,12 +418,16 @@ public class IndexActivity extends BaseActivity {
 		if (null != mLoadDataTask
 				&& mLoadDataTask.getStatus() == LoadDataTask.Status.RUNNING)
 			mLoadDataTask.cancel(true);
-		try {
-			unregisterReceiver(networkChange);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		if (networkChange != null) {
+			try {
+				unregisterReceiver(networkChange);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
 		}
+			
+		
 
 		if (mLocClient.isStarted()) {
 			mLocClient.unRegisterLocationListener(MzeatApplication
@@ -688,7 +692,7 @@ public class IndexActivity extends BaseActivity {
 				intent.setClass(IndexActivity.this, ShareActivity.class);
 				startActivity(intent);
 				break;
-				//修改了位置
+				//修改了位置,变成招聘
 			case R.id.btn_shop:
 				intent.setClass(IndexActivity.this, InviteActivity.class);
 				startActivity(intent);
@@ -697,10 +701,30 @@ public class IndexActivity extends BaseActivity {
 				intent.setClass(IndexActivity.this, SaleActivity.class);
 				startActivity(intent);
 				break;
-				//修改了位置
+				//修改了位置，变成兑换
 			case R.id.btn_coupon:
 				intent.setClass(IndexActivity.this,ChangeActivity.class);
 				startActivity(intent);
+				break;
+			case R.id.btn_change:
+				
+				//intent.setClass(IndexActivity.this,PubShareActivity.class);
+				//startActivity(intent);
+				
+				if (MzeatApplication.getInstance().getpPreferencesConfig()
+						.getInt("loginstate", 0) == 1) {
+					intent = new Intent(IndexActivity.this,
+							PubShareActivity.class);
+					startActivityForResult(intent, 1);
+
+				} else {
+					intent = new Intent(IndexActivity.this, LoginActivity.class);
+					MzeatApplication.getInstance().getpPreferencesConfig()
+							.setInt("fromsharelist", 1);
+					ShowToast.showMessage(IndexActivity.this, "请您先登录再发分享。");
+					startActivity(intent);
+
+				}
 				break;
 			default:
 				break;

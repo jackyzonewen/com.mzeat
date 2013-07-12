@@ -19,7 +19,7 @@
     <string name="route">路线图</string>
     <!-- 提示 -->
     <string name="dialog_tips">提示</string>
-    <string name="loading">Loading\u2026</string>
+    <string name="loading">加载中\u2026</string>
     <string name="posterfailetips">获取海报失败。</string>
     <string name="postererrortips">获取海报失败，请检查网络。</string>
     <string name="your_network_has_disconnected">网络未连接，请你连接网络！</string>
@@ -124,7 +124,7 @@
     <string name="should_pay">应付款金额：</string>
     <string name="jifen_change">购买成功后积分变更：</string>
     <string name="editmoblie">请输入您的手机号：</string>
-
+	<string name="tips_entermobile">输入您的手机号</string>
     <!-- 微分享 -->
     <string name="microshare">微分享</string>
     <string name="hint_comment">输入评论</string>

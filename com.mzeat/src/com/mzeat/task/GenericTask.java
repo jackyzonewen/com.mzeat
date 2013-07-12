@@ -60,7 +60,7 @@ public abstract class GenericTask extends AsyncTask<TaskParams, Object, TaskResu
 		if (mListener != null) {
 			mListener.onCancelled(this);
 		}
-		Log.i(TAG, mListener.getName() + " has been Cancelled.");
+		//Log.i(TAG, mListener.getName() + " has been Cancelled.");
 	}
 
 	/**

@@ -9,9 +9,13 @@
         android:layout_height="wrap_content"
         layout="@layout/title_mycount" />
 
-    <ScrollView
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sl_mycount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        ptr:ptrMode="pullDownFromTop" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,18 +46,18 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/selector_edit" />
+
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:layout_toLeftOf="@id/edit"
                     android:layout_toRightOf="@id/img_user"
                     android:ellipsize="end"
-                    android:layout_toLeftOf="@id/edit"
                     android:singleLine="true"
                     android:textAppearance="@style/Textcolor.GreenMedium" />
-
             </RelativeLayout>
 
             <View
@@ -133,8 +137,8 @@
                     android:id="@+id/rl_usercard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp" 
-                    android:background="@drawable/selector_storeintroduce">
+                    android:background="@drawable/selector_storeintroduce"
+                    android:padding="5dp" >
 
                     <ImageView
                         android:id="@+id/img_usercard"
@@ -173,8 +177,8 @@
                     android:id="@+id/rl_signin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:background="@drawable/selector_storeintroduce" >
+                    android:background="@drawable/selector_storeintroduce"
+                    android:padding="5dp" >
 
                     <ImageView
                         android:id="@+id/img_signin"
@@ -328,6 +332,6 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 
 </LinearLayout>

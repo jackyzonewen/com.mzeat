@@ -66,7 +66,7 @@ public class MessageActivity extends BaseActivity {
 		setContentView(R.layout.activity_message);
 
 		initView();
-		setViewData();
+		// setViewData();
 
 	}
 
@@ -97,13 +97,18 @@ public class MessageActivity extends BaseActivity {
 					mShareDb = new My_shareDb(MessageActivity.this);
 					mShareDb.delete(share_id);
 					mShareDb.closeDB();
-					int count = MzeatApplication.getInstance()
+					count = MzeatApplication.getInstance()
 							.getpPreferencesConfig().getInt("count", 0);
 					if (count != 0) {
 						count = count - 1;
 						MzeatApplication.getInstance().getpPreferencesConfig()
 								.setInt("count", count);
 					}
+
+					Intent mIntent = new Intent();
+					mIntent.putExtra("count", count);
+					mIntent.setAction("android.intent.action.setTextView");
+					sendBroadcast(mIntent);
 				}
 			});
 		} else {
@@ -145,18 +150,25 @@ public class MessageActivity extends BaseActivity {
 							MessageActivity.this);
 					mCommentlist_itemDb.delete(comment_id);
 					mCommentlist_itemDb.closeDB();
-					int count = MzeatApplication.getInstance()
+					count = MzeatApplication.getInstance()
 							.getpPreferencesConfig().getInt("count", 0);
 					if (count != 0) {
 						count = count - 1;
 						MzeatApplication.getInstance().getpPreferencesConfig()
 								.setInt("count", count);
+
 					}
+
+					Intent mIntent = new Intent();
+					mIntent.putExtra("count", count);
+					mIntent.setAction("android.intent.action.setTextView");
+					sendBroadcast(mIntent);
 				}
 			});
 		} else {
 			if (isNoMessage) {
 				ll_tips.setVisibility(View.VISIBLE);
+
 			}
 			mCommentAdapter = new My_commentAdapter(this);
 			mCommentAdapter.clear();
@@ -200,18 +212,25 @@ public class MessageActivity extends BaseActivity {
 		lv_my_comment = (MyListView) findViewById(R.id.lv_my_comment);
 	}
 
-	
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent MyIntent = new Intent(Intent.ACTION_MAIN);
-			MyIntent.addCategory(Intent.CATEGORY_HOME);
-			startActivity(MyIntent);
+			if (null != mLoadDataTask) {
+				mLoadDataTask.cancel(true);
+				mLoadDataTask.setListener(null);
+				mLoadDataTask = null;
+				sl_message.onRefreshComplete();
+			} else {
+				Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+				MyIntent.addCategory(Intent.CATEGORY_HOME);
+				startActivity(MyIntent);
+			}
+
 			// Log.e("back", "back");
 		}
-		return super.onKeyDown(keyCode, event);
+		//return super.onKeyDown(keyCode, event);
+		return true;
 	}
 
 	@Override
@@ -223,6 +242,7 @@ public class MessageActivity extends BaseActivity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("android.intent.action.setViewData");
 		registerReceiver(receiver, filter);
+
 	}
 
 	@Override
