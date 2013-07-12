@@ -23,6 +23,7 @@ import com.mzeat.model.Share;
 import com.mzeat.model.ShareDetail;
 import com.mzeat.model.Signin;
 import com.mzeat.model.U_commentlist;
+import com.mzeat.model.Update;
 import com.mzeat.model.User;
 
 public interface IMzeatService {
@@ -73,4 +74,7 @@ public interface IMzeatService {
 	QQ_Login_Return getQq_Login_Return(String qq_id);
 	
 	BindQQReturn getBindQQReturn(String email,String  pwd);
+	
+	Update checkVersion(String versionName);
+	
 }

@@ -810,7 +810,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class id {
         public static final int RelativeLayout_Item=0x7f07010a;
         public static final int acount=0x7f070054;
-        public static final int action_settings=0x7f070142;
+        public static final int action_settings=0x7f070144;
         public static final int addnum=0x7f07012e;
         public static final int address=0x7f0700a0;
         public static final int all_product_count=0x7f07002c;
@@ -1123,6 +1123,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tv_useracount=0x7f070036;
         public static final int tv_usercard=0x7f070073;
         public static final int underline=0x7f07000b;
+        public static final int update_progress=0x7f070142;
+        public static final int update_progress_text=0x7f070143;
         public static final int useracount=0x7f070035;
         public static final int usercard=0x7f070072;
         public static final int username=0x7f0700d0;
@@ -1214,6 +1216,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_mycart=0x7f030047;
         public static final int title_mycount=0x7f030048;
         public static final int title_shopping=0x7f030049;
+        public static final int update_progress=0x7f03004a;
     }
     public static final class menu {
         public static final int main=0x7f0e0000;

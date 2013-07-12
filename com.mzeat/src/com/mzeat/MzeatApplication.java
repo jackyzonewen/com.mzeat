@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
+
+
 import cn.jpush.android.api.CustomPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
 
@@ -29,6 +31,7 @@ import com.baidu.mapapi.search.MKWalkingRouteResult;
 import com.mzeat.api.IMzeatService;
 import com.mzeat.api.MzeatService;
 import com.mzeat.image.ImageCache;
+import com.mzeat.util.StringUtils;
 
 import android.app.Application;
 import android.content.Context;
@@ -343,4 +346,23 @@ public class MzeatApplication extends Application {
 	public void setProperty(String key,String value){
 		AppConfig.getAppConfig(this).set(key, value);
 	}
+	
+	public String getProperty(String key){
+		return AppConfig.getAppConfig(this).get(key);
+	}
+	
+	/**
+	 * 是否启动检查更新
+	 * @return
+	 */
+	public boolean isCheckUp()
+	{
+		String perf_checkup = getProperty(AppConfig.CONF_CHECKUP);
+		//默认是开启
+		if(StringUtils.isEmpty(perf_checkup))
+			return true;
+		else
+			return StringUtils.toBool(perf_checkup);
+	}
+	
 }

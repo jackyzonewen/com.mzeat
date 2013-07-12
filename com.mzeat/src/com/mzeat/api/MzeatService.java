@@ -53,6 +53,7 @@ import com.mzeat.model.Shopping;
 import com.mzeat.model.Signin;
 import com.mzeat.model.U_commentlist;
 import com.mzeat.model.U_commentlist_item;
+import com.mzeat.model.Update;
 import com.mzeat.model.User;
 import com.mzeat.util.JsonUtil;
 
@@ -1140,6 +1141,40 @@ public class MzeatService implements IMzeatService {
 			return bindQQReturn;
 		}
 		return bindQQReturn;
+	}
+
+	@Override
+	public Update checkVersion(String versionName) {
+		// TODO Auto-generated method stub
+		Update update = new Update();
+		String url = String.format("%s/index.php?", ServerUrl);
+		ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
+		params.add(new BasicNameValuePair("act", "checkVersion"));
+		params.add(new BasicNameValuePair("r_type", "1"));
+		params.add(new BasicNameValuePair("versionName", versionName));
+
+		try {
+			Response response = mHttpClient.post(url, params);
+			JSONObject jobj = response.asJSONObject();
+			
+			 Log.e("jobj", jobj.toString());
+			String code = jobj.getString("open");
+			
+			
+
+			if ( code.equals("1")) {
+				update.setOpen("1");
+				update = JsonUtil.fromJson(jobj.toString(),Update.class);
+			}else {
+				update.setOpen("0");
+			} 
+		} catch (Exception ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
+			update.setOpen("2");
+			return update;
+		}
+		return update;
 	}
 
 }

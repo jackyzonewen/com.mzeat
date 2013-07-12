@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Timer;
 
 
+
 import cn.jpush.android.api.JPushInterface;
 
 import com.mzeat.AppManager;
@@ -14,6 +15,7 @@ import com.mzeat.R;
 import com.mzeat.model.User;
 import com.mzeat.util.LogUtil;
 import com.mzeat.util.ShowToast;
+import com.mzeat.util.UpdateManager;
 
 import android.app.AlertDialog;
 import android.app.TabActivity;
@@ -64,7 +66,6 @@ public class MainActivity extends TabActivity {
 
 	MyReceiver receiver;
 
-
 	
 	
 	@Override
@@ -83,7 +84,10 @@ public class MainActivity extends TabActivity {
 		}
 		
 
-		
+		 //检查新版本
+        if(MzeatApplication.getInstance().isCheckUp()){
+        	UpdateManager.getUpdateManager().checkAppUpdate(this, false);
+        }
 		
 		
 		
