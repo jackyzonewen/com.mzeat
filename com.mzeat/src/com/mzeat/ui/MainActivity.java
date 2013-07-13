@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 
-
-
 import cn.jpush.android.api.JPushInterface;
 
 import com.mzeat.AppManager;
@@ -47,8 +45,6 @@ import android.widget.TabHost.OnTabChangeListener;
 
 public class MainActivity extends TabActivity {
 
-
-	
 	TabHost tabHost;
 	TabHost.TabSpec tabSpec;
 	RadioGroup radioGroup;
@@ -66,8 +62,6 @@ public class MainActivity extends TabActivity {
 
 	MyReceiver receiver;
 
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -82,20 +76,17 @@ public class MainActivity extends TabActivity {
 			tv_tips.setVisibility(View.VISIBLE);
 
 		}
-		
 
-		 //检查新版本
-        if(MzeatApplication.getInstance().isCheckUp()){
-        	UpdateManager.getUpdateManager().checkAppUpdate(this, false);
-        }
-		
-		
-		
+		// 检查新版本
+		//if (MzeatApplication.getInstance().isCheckUp()) {
+		//	UpdateManager.getUpdateManager().checkAppUpdate(this, false);
+		//}
+
 		receiver = new MyReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("android.intent.action.setTextView");
 		registerReceiver(receiver, filter);
-		
+
 		tabHost = getTabHost();
 
 		tabHost.addTab(tabHost.newTabSpec("index").setIndicator("index")
@@ -117,15 +108,15 @@ public class MainActivity extends TabActivity {
 				if (tabId.equals("message")) {
 					tv_tips.setVisibility(View.GONE);
 
-
 				} else {
-					count = MzeatApplication.getInstance().getpPreferencesConfig().getInt("count", 0);
-					if (count!= 0) {
-						
+					count = MzeatApplication.getInstance()
+							.getpPreferencesConfig().getInt("count", 0);
+					if (count != 0) {
+
 						tv_tips.setText(String.valueOf(count));
 						tv_tips.setVisibility(View.VISIBLE);
 
-					}else {
+					} else {
 						tv_tips.setVisibility(View.GONE);
 					}
 				}
@@ -151,7 +142,7 @@ public class MainActivity extends TabActivity {
 
 				break;
 			case R.id.radio_cart:
-				//tabHost.setCurrentTabByTag("shopcart");
+				// tabHost.setCurrentTabByTag("shopcart");
 
 				if (mConfig.getInt("loginstate", 0) == 1) {
 					tabHost.setCurrentTabByTag("shopcart");
@@ -165,7 +156,7 @@ public class MainActivity extends TabActivity {
 				break;
 
 			case R.id.radio_message:
-			
+
 				if (mConfig.getInt("loginstate", 0) == 1) {
 					tabHost.setCurrentTabByTag("message");
 
@@ -199,28 +190,47 @@ public class MainActivity extends TabActivity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		// 检查新版本
+		if (MzeatApplication.getInstance().isCheckUp()) {
+			UpdateManager.getUpdateManager().checkAppUpdate(this, false);
+		}
+
+		int backtohome = MzeatApplication.getInstance().getpPreferencesConfig()
+				.getInt("backtohome", 0) ;
+		if (backtohome  == 1) {
+			index.setChecked(true);
+			tabHost.setCurrentTabByTag("index");
+			MzeatApplication.getInstance().getpPreferencesConfig()
+			.setInt("backtohome", 0) ;
+		}
 		
+		/**
+		// 弹出推送通知
 		int toast_message = getIntent().getIntExtra("toast_message", 0);
 		if (toast_message == 1) {
 			ShowToast.showMessage(this, getIntent().getStringExtra("message"));
 		}
-		
-		if (MzeatApplication.getInstance().getpPreferencesConfig().getInt("loginstate", 0) != 1) {
-			MzeatApplication.getInstance().getpPreferencesConfig().setInt("count", 0);
+		 **/
+		// 保证消息数提示显示正常
+		if (MzeatApplication.getInstance().getpPreferencesConfig()
+				.getInt("loginstate", 0) != 1) {
+			MzeatApplication.getInstance().getpPreferencesConfig()
+					.setInt("count", 0);
 			tv_tips.setVisibility(View.GONE);
 		}
 		LogUtil.getLogOnStart(TAG);
-		
-		//从通知跳转到我的消息
-		int fromnotice = MzeatApplication.getInstance().getpPreferencesConfig().getInt("fromnotice",0);
+
+		// 从通知跳转到我的消息
+		int fromnotice = MzeatApplication.getInstance().getpPreferencesConfig()
+				.getInt("fromnotice", 0);
 		Log.e("formnotice", String.valueOf(fromnotice));
 		if (fromnotice == 1) {
 			rb_message.setChecked(true);
 			tabHost.setCurrentTabByTag("message");
 			MzeatApplication.getInstance().getpPreferencesConfig()
-			.setInt("fromnotice", 0);
+					.setInt("fromnotice", 0);
 		}
-		
+
 		int logout = MzeatApplication.getInstance().getpPreferencesConfig()
 				.getInt("logout", 0);
 		// 注销之后跳到注册页面再返回后跳到主界面
@@ -230,18 +240,18 @@ public class MainActivity extends TabActivity {
 			MzeatApplication.getInstance().getpPreferencesConfig()
 					.setInt("logout", 0);
 		}
-		
-		int fromQQlogin = MzeatApplication.getInstance().getpPreferencesConfig()
-				.getInt("fromQQlogin", 0);
-		// 注销之后跳到注册页面再返回后跳到主界面
+
+		// 注销之后用QQ登陆
+		int fromQQlogin = MzeatApplication.getInstance()
+				.getpPreferencesConfig().getInt("fromQQlogin", 0);
 		if (fromQQlogin == 1) {
 			rb_mycount.setChecked(true);
 			tabHost.setCurrentTabByTag("mycount");
 			MzeatApplication.getInstance().getpPreferencesConfig()
 					.setInt("fromQQlogin", 0);
 		}
-		
-		//注册成功后跳到我的账号
+
+		// 注册成功后跳到我的账号
 		else if (logout == 2) {
 			rb_mycount.setChecked(true);
 			tabHost.setCurrentTabByTag("mycount");
@@ -254,7 +264,7 @@ public class MainActivity extends TabActivity {
 			rb_myorder.setChecked(true);
 			tabHost.setCurrentTabByTag("shopcart");
 			MzeatApplication.getInstance().getpPreferencesConfig()
-			.setInt("tomyorder", 0);
+					.setInt("tomyorder", 0);
 		}
 	}
 
@@ -263,17 +273,21 @@ public class MainActivity extends TabActivity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		LogUtil.getLogOnResume(TAG);
-		int toast_message = MzeatApplication.getInstance().getpPreferencesConfig().getInt("toast_message", 0);
+		int toast_message = MzeatApplication.getInstance()
+				.getpPreferencesConfig().getInt("toast_message", 0);
 		Log.e(TAG, String.valueOf(toast_message));
-		
+
+		//掏出推送消息对话框
 		if (toast_message == 1) {
-		showMessageAlert();
-		MzeatApplication.getInstance().getpPreferencesConfig().setInt("toast_message", 0);
-			MzeatApplication.getInstance().getpPreferencesConfig().setString("message", "");
+			showMessageAlert();
+			MzeatApplication.getInstance().getpPreferencesConfig()
+					.setInt("toast_message", 0);
+			MzeatApplication.getInstance().getpPreferencesConfig()
+					.setString("message", "");
 		}
 	}
-	private void showMessageAlert()
-	{
+
+	private void showMessageAlert() {
 		final AlertDialog dlg = new AlertDialog.Builder(this).create();
 		dlg.show();
 		Window window = dlg.getWindow();
@@ -282,29 +296,30 @@ public class MainActivity extends TabActivity {
 		window.setContentView(R.layout.ad_message);
 		// 为确认按钮添加事件,执行退出应用操作
 		Button ok = (Button) window.findViewById(R.id.btn_yes);
-		TextView content = (TextView)window.findViewById(R.id.tv_adcontent);
-		content.setText(MzeatApplication.getInstance().getpPreferencesConfig().getString("message",""));
-		ok.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View v)
-			{
+		TextView content = (TextView) window.findViewById(R.id.tv_adcontent);
+		content.setText(MzeatApplication.getInstance().getpPreferencesConfig()
+				.getString("message", ""));
+		ok.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
 				dlg.cancel();
 			}
 		});
 
 	}
+
 	@Override
 	protected void onRestart() {
 		// TODO Auto-generated method stub
 		super.onRestart();
 		LogUtil.getLogOnRestart(TAG);
 	}
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 		LogUtil.getLogOnPause(TAG);
-	
+
 	}
 
 	@Override
@@ -323,11 +338,9 @@ public class MainActivity extends TabActivity {
 		if (receiver != null) {
 			unregisterReceiver(receiver);
 		}
-			
-		
+
 	}
-	
-	
+
 	public class MyReceiver extends BroadcastReceiver {
 
 		// 自定义一个广播接收器
@@ -337,7 +350,7 @@ public class MainActivity extends TabActivity {
 
 			// TODO Auto-generated method stub
 
-			//System.out.println("OnReceiver");
+			// System.out.println("OnReceiver");
 
 			Bundle bundle = intent.getExtras();
 
@@ -358,52 +371,52 @@ public class MainActivity extends TabActivity {
 		}
 
 		public MyReceiver() {
-			//System.out.println("MyReceiver");
+			// System.out.println("MyReceiver");
 
 			// 构造函数，做一些初始化工作，本例中无任何作用
 
 		}
 
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//menu.add("menu");// 必须创建一项
+		// menu.add("menu");// 必须创建一项
 		// setIcon()方法为菜单设置图标，这里使用的是系统自带的图标，同学们留意一下,以
 		// android.R开头的资源是系统提供的，我们自己提供的资源是以R开头的
+		menu.clear();
 		menu.add(Menu.NONE, Menu.FIRST, 1, "关于").setIcon(R.drawable.menu_about);
-		menu.add(Menu.NONE, Menu.FIRST + 1, 2, "退出").setIcon(R.drawable.menu_quit);
-		return super.onCreateOptionsMenu(menu);
+		menu.add(Menu.NONE, Menu.FIRST + 1, 2, "退出").setIcon(
+				R.drawable.menu_quit);
+		//return super.onCreateOptionsMenu(menu);
+		return true;
 	}
-	
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
-		
+
 		switch (item.getItemId()) {
 
-		case Menu.FIRST :
+		case Menu.FIRST:
 
-			//Toast.makeText(this, "删除菜单被点击了", Toast.LENGTH_LONG).show();
+			// Toast.makeText(this, "删除菜单被点击了", Toast.LENGTH_LONG).show();
 
 			break;
 
 		case Menu.FIRST + 1:
 			Log.e("exit", "appexit");
-		AppManager.getAppManager().AppExit(this);
-			//Toast.makeText(this, "保存菜单被点击了", Toast.LENGTH_LONG).show();
+			AppManager.getAppManager().AppExit(this);
+			// Toast.makeText(this, "保存菜单被点击了", Toast.LENGTH_LONG).show();
 
 			break;
-
 
 		}
 
 		return false;
 
 	}
-	
-	
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -413,22 +426,22 @@ public class MainActivity extends TabActivity {
 			int gotowhere = data.getIntExtra("back", 0);
 			if (gotowhere == 0) {
 
-				//mycount.putExtra("fromlogin", 1);
+				// mycount.putExtra("fromlogin", 1);
 				tabHost.setCurrentTabByTag("mycount");
-				
+
 			}
 
 		}
 		// 在登陆页面返回跳转
 		else if (resultCode == 2) {
-			
+
 			Log.e("resultCode", String.valueOf(resultCode));
 			index.setChecked(true);
 
-		}else if (resultCode == 3) {
+		} else if (resultCode == 3) {
 			rb_myorder.setChecked(true);
 			tabHost.setCurrentTabByTag("shopcart");
-		}else if (resultCode == 4) {
+		} else if (resultCode == 4) {
 			rb_message.setChecked(true);
 			tabHost.setCurrentTabByTag("message");
 		}

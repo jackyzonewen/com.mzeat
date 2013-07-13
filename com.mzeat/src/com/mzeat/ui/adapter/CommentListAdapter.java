@@ -52,7 +52,8 @@ public class CommentListAdapter extends
 		holder.content = (TextView) convertView.findViewById(R.id.content);
 		holder.img_user = (ImageView) convertView.findViewById(R.id.img_user);
 
-
+		holder.sentfrom = (TextView) convertView.findViewById(R.id.sentfrom);
+		holder.tv_sentfrom = (TextView) convertView.findViewById(R.id.tv_sentfrom);
 		convertView.setTag(holder);
 		return convertView;
 	}
@@ -104,7 +105,11 @@ public class CommentListAdapter extends
 			holder.content.setText(parser.addSmileySpans(item.getContent()));
 		}
 		
-
+		if (item.getSend_from()!= null && !StringUtils.isEmpty(item.getSend_from())) {
+			holder.sentfrom.setVisibility(View.VISIBLE);
+			holder.tv_sentfrom.setVisibility(View.VISIBLE);
+			holder.tv_sentfrom.setText(item.getSend_from());
+		}
 	}
 
 	private class ViewHolder {
@@ -112,6 +117,8 @@ public class CommentListAdapter extends
 		TextView content;
 		TextView creat_time;
 		ImageView img_user;
+		TextView sentfrom;
+		TextView tv_sentfrom;
 
 	}
 

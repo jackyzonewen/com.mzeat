@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.mzeat.AppManager;
 import com.mzeat.MzeatApplication;
 import com.mzeat.R;
 import com.mzeat.api.MsgService;
@@ -21,6 +22,7 @@ import com.mzeat.ui.adapter.My_commentAdapter;
 import com.mzeat.ui.adapter.My_shareAdapter;
 import com.mzeat.ui.widget.MyListView;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class MessageActivity extends BaseActivity {
+public class MessageActivity extends Activity {
 
 	private MyListView lv_my_share;
 	private MyListView lv_my_comment;
@@ -64,12 +66,21 @@ public class MessageActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_message);
-
+		// 添加Activity到堆栈
+		AppManager.getAppManager().addActivity(this);
 		initView();
 		// setViewData();
 
 	}
 
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		// 结束Activity&从堆栈中移除
+				AppManager.getAppManager().finishActivity(this);
+	}
 	private void setViewData() {
 		// TODO Auto-generated method stub
 		boolean isNoMessage = false;
@@ -226,11 +237,15 @@ public class MessageActivity extends BaseActivity {
 				MyIntent.addCategory(Intent.CATEGORY_HOME);
 				startActivity(MyIntent);
 			}
-
+			return true;
 			// Log.e("back", "back");
 		}
-		//return super.onKeyDown(keyCode, event);
-		return true;
+		
+		//if (keyCode == KeyEvent.KEYCODE_MENU) {
+		//	super.onKeyDown(keyCode, event);
+		//}
+		return super.onKeyDown(keyCode, event);
+		//
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import com.mzeat.util.CheckNetworkConnection;
 import com.mzeat.util.ConnectionChangeReceiver;
 import com.mzeat.util.ShowToast;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -348,8 +349,9 @@ public class InviteActivity extends BaseActivity {
 				return true;
 			}
 			finish();
+			return true;
 		}
-		return true;
+		return super.onKeyDown(keyCode, event);
 	}
 
 }

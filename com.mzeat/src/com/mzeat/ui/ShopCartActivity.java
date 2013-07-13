@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.mzeat.AppManager;
 import com.mzeat.MzeatApplication;
 import com.mzeat.R;
 import com.mzeat.db.MycartDb;
@@ -17,6 +18,7 @@ import com.mzeat.util.JsonUtil;
 import com.mzeat.util.ShowToast;
 
 import android.R.array;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +34,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ShopCartActivity extends BaseActivity {
+public class ShopCartActivity extends Activity {
 
 	private ListView lv_cart;
 	private MyCartAdapter mAdapter;
@@ -60,7 +62,8 @@ public class ShopCartActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shopcart);
-
+		// 添加Activity到堆栈
+		AppManager.getAppManager().addActivity(this);
 		lv_cart = (ListView) findViewById(R.id.lv_cart);
 		mAdapter = new MyCartAdapter(this);
 		mItem = new ArrayList<PrivilegeItem>();
@@ -77,7 +80,7 @@ public class ShopCartActivity extends BaseActivity {
 					for (int i = 0; i < mItem.size(); i++) {
 						ConfirmOrderItem item = new ConfirmOrderItem(mItem.get(
 								i).getGoods_id(), mItem.get(i).getNum(), mItem
-								.get(i).getCount(),mItem.get(i).getCur_price(),mItem.get(i).getImage(),mItem.get(i).getTitle());
+								.get(i).getCount(),mItem.get(i).getCur_price(),mItem.get(i).getImage(),mItem.get(i).getTitle(),mItem.get(i).getGoods_brief());
 						orderItems.add(item);
 
 					}
@@ -149,6 +152,15 @@ public class ShopCartActivity extends BaseActivity {
 
 	}
 
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+
+		// 结束Activity&从堆栈中移除
+		AppManager.getAppManager().finishActivity(this);
+	}
 	public class MyReceiver extends BroadcastReceiver {
 
 		// 自定义一个广播接收器

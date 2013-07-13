@@ -18,14 +18,15 @@ public class ConfirmOrderItem implements Serializable{
 	private String price;
 	private String url;
 	private String product;
-	
-	public ConfirmOrderItem(String goods_id,String num, String count,String price,String url,String product) {
+	private String describe;
+	public ConfirmOrderItem(String goods_id,String num, String count,String price,String url,String product,String describe) {
 		this.goods_id = goods_id;
 		this.num = num;
 		this.count = count;
 		this.price = price;
 		this.url = url;
 		this.product = product;
+		this.setDescribe(describe);
     }
 	public String getGoods_id() {
 		return goods_id;
@@ -82,6 +83,12 @@ public class ConfirmOrderItem implements Serializable{
 	}
 	public void setProduct(String product) {
 		this.product = product;
+	}
+	public String getDescribe() {
+		return describe;
+	}
+	public void setDescribe(String describe) {
+		this.describe = describe;
 	}
 	
 	

@@ -783,10 +783,11 @@ public class BuyActivity extends BaseActivity {
 
 			Intent intent = new Intent(BuyActivity.this, MainActivity.class);
 			startActivity(intent);
+			return true;
 		}
 
-		return true;
-		// return super.onKeyDown(keyCode, event);
+		//return true;
+		 return super.onKeyDown(keyCode, event);
 	}
 
 	private static final int fromfood = 2;

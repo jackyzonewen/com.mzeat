@@ -94,7 +94,7 @@
     <string name="acount_hint">请输入你的账号</string>
     <string name="registnewcount">没有账号，请注册新账号</string>
     <string name="bindmycount">已有账号，请绑定账号</string>
-  <string name="bindcount">绑定账号</string>
+    <string name="bindcount">绑定账号</string>
     <!-- 好优惠 -->
     <string name="privilege">好优惠</string>
     <string name="nowprice">现价：</string>
@@ -124,14 +124,15 @@
     <string name="should_pay">应付款金额：</string>
     <string name="jifen_change">购买成功后积分变更：</string>
     <string name="editmoblie">请输入您的手机号：</string>
-	<string name="tips_entermobile">输入您的手机号</string>
+    <string name="tips_entermobile">输入您的手机号</string>
     <!-- 微分享 -->
     <string name="microshare">微分享</string>
     <string name="hint_comment">输入评论</string>
     <string name="hint_reply">输入回复</string>
     <string name="hint_pubshare">输入分享内容</string>
     <string name="hint_pubsharetitle">输入分享标题</string>
-     <string name="tips_loadmore">查看更多</string>
+    <string name="tips_loadmore">查看更多</string>
+    <string name="sendfrom">来自于：</string>
 
     <!-- 会员卡激活 -->
     <string name="tips_truename">请输入真实姓名</string>
@@ -151,17 +152,35 @@
     <string name="address_invite">商家地址：</string>
     <string name="claim">要求：</string>
     <string name="create_time">发布时间：</string>
- <!-- 促销活动 -->
-  <string name="sale">促销活动</string>
-  
-   <!--积分商城-->
-   <string name="changestore">积分商城</string>
-   <string name="changeproductdetail">商品详情</string>
-  <!-- 消息 -->
-  <string name="message">消息</string>
-  <string name="my_share">你的微分享：</string>
-  <string name="havecomment">有了新的评论。</string>
-   <string name="my_comment">你在微分享：</string>
+    <!-- 促销活动 -->
+    <string name="sale">促销活动</string>
+
+    <!-- 积分商城 -->
+    <string name="changestore">积分商城</string>
+    <string name="changeproductdetail">商品详情</string>
+    <!-- 消息 -->
+    <string name="message">消息</string>
+    <string name="my_share">你的微分享：</string>
+    <string name="havecomment">有了新的评论。</string>
+    <string name="my_comment">你在微分享：</string>
     <string name="havereply">的评论有了新的回复。</string>
     <string name="tips_message">还没有消息，先去逛分享吧！</string>
+    
+    
+    <!-- 支付宝 -->
+    <string name="remote_call_failed">Failure calling remote service</string>
+    <string name="partnerHint">"partner"</string>
+	<string name="sellerHint">"seller"</string>
+	<string name="out_trade_noHint">"out_trade_no"</string>
+	<string name="subjectHint">"subject"</string>
+	<string name="bodyHint">"body"</string>
+	<string name="total_feeHint">"total_fee"</string>
+	<string name="notify_urlHint">"notify_url"</string>
+	<string name="charsetHint">"charset"</string>
+	<string name="signTypeHint">"signType"</string>
+	<string name="confirm_install_hint">"安装提示"</string>	
+	<string name="confirm_install">"为保证您的交易安全，需要您安装支付宝安全支付服务，才能进行付款。\n\n点击确定，立即安装。"</string>
+	<string name="Ensure">"确定"</string>
+	<string name="Cancel">"取消"</string>
+	<string name="check_sign_failed">您的订单信息已被非法篡改。</string> 
 </resources>

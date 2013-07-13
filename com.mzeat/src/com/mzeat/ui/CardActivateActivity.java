@@ -284,6 +284,6 @@ public class CardActivateActivity extends BaseActivity {
 			finish();
 		}
 
-		return true;
+		return super.onKeyDown(keyCode, event);
 	}
 }

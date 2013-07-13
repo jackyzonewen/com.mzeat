@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
+import com.mzeat.AppManager;
 import com.mzeat.MzeatApplication;
 import com.mzeat.R;
 import com.mzeat.api.MzeatService;
@@ -72,7 +73,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView.ScaleType;
 
-public class IndexActivity extends BaseActivity {
+public class IndexActivity extends Activity {
 
 	private Spinner sp_searchType;
 	private ArrayAdapter arrayAdapter_SearchType;
@@ -125,7 +126,7 @@ public class IndexActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_index);
-
+		AppManager.getAppManager().addActivity(this);
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		this.bmpManager = new PosterManager(BitmapFactory.decodeResource(this.getResources(), R.drawable.empty_image));
@@ -441,6 +442,9 @@ public class IndexActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
+		
+		// 结束Activity&从堆栈中移除
+		AppManager.getAppManager().finishActivity(this);
 		Log.e("IndexActivity onDestroy()", "onDestroy()");
 		if (null != mLoadDataTask
 				&& mLoadDataTask.getStatus() == LoadDataTask.Status.RUNNING)
