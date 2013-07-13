@@ -92,13 +92,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/zhifubao" />
-
-                <TextView
-                    android:id="@+id/count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pay_zhifubao"
-                    android:textAppearance="@style/Textcolor.SomberMedium" />
             </LinearLayout>
 
             <View

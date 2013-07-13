@@ -380,6 +380,6 @@ public class ChangeActivity extends BaseActivity {
 			finish();
 		}
 
-		return true;
+		return super.onKeyDown(keyCode, event);
 	}
 }

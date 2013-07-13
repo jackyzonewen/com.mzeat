@@ -52,6 +52,34 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/img_user"
             android:textAppearance="@style/Textcolor.SomberSmall" />
+
+        <RelativeLayout
+            android:id="@+id/rl_sentfrom"
+             android:layout_below="@id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp" >
+
+            <TextView
+                android:id="@+id/sentfrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/sendfrom"
+                android:textAppearance="@style/Textcolor.SomberSmall"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_sentfrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/sentfrom"
+                android:textAppearance="@style/Textcolor.SomberSmall"
+                android:visibility="gone" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <View

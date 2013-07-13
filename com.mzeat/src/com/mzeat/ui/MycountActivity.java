@@ -9,6 +9,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.mzeat.AppException;
+import com.mzeat.AppManager;
 import com.mzeat.MzeatApplication;
 import com.mzeat.PreferencesConfig;
 import com.mzeat.R;
@@ -34,6 +35,7 @@ import com.mzeat.util.LogUtil;
 import com.mzeat.util.ShowToast;
 import com.mzeat.util.StringUtils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -58,7 +60,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class MycountActivity extends BaseActivity implements OnClickListener {
+public class MycountActivity extends Activity implements OnClickListener {
 
 	private String TAG = "MycountActivity";
 	private User user = new User();
@@ -106,6 +108,8 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		// LogUtil.getLogOnStart(TAG);
 		setContentView(R.layout.activity_mycount);
+		// 添加Activity到堆栈
+		AppManager.getAppManager().addActivity(this);
 		this.bmpManager = new BitmapManager(BitmapFactory.decodeResource(
 				this.getResources(), R.drawable.empty_image));
 
@@ -476,6 +480,8 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 	protected void onDestroy() {
 		super.onDestroy();
 		LogUtil.getLogOnDestroy(TAG);
+		// 结束Activity&从堆栈中移除
+				AppManager.getAppManager().finishActivity(this);
 	};
 
 	protected void onStart() {
@@ -761,9 +767,14 @@ public class MycountActivity extends BaseActivity implements OnClickListener {
 				MyIntent.addCategory(Intent.CATEGORY_HOME);
 				startActivity(MyIntent);
 			}
-			
+			return true;
 		}
-		return true;
+		
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			super.onKeyDown(keyCode, event);
+		}
+		
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override

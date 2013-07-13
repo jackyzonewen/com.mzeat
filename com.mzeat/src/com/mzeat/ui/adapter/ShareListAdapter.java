@@ -56,7 +56,8 @@ public class ShareListAdapter extends
 		holder.content = (TextView) convertView.findViewById(R.id.content);
 		holder.say = (TextView) convertView.findViewById(R.id.saycount);
 		holder.img_user = (ImageView) convertView.findViewById(R.id.img_user);
-
+		holder.sentfrom = (TextView) convertView.findViewById(R.id.sentfrom);
+		holder.tv_sentfrom = (TextView) convertView.findViewById(R.id.tv_sentfrom);
 		holder.img_content = (ImageView) convertView
 				.findViewById(R.id.img_content);
 		 
@@ -121,7 +122,12 @@ public class ShareListAdapter extends
 			} else {
 				holder.img_content.setVisibility(View.GONE);
 			}
-		
+			
+			if (item.getSend_from()!= null && !StringUtils.isEmpty(item.getSend_from())) {
+				holder.sentfrom.setVisibility(View.VISIBLE);
+				holder.tv_sentfrom.setVisibility(View.VISIBLE);
+				holder.tv_sentfrom.setText(item.getSend_from());
+			}
 
 	}
 
@@ -132,6 +138,8 @@ public class ShareListAdapter extends
 		TextView creat_time;
 		ImageView img_user;
 		ImageView img_content;
+		TextView sentfrom;
+		TextView tv_sentfrom;
 		
 	}
 

@@ -355,8 +355,10 @@ public class SaleActivity extends BaseActivity {
 				return true;
 			}
 			finish();
+			return true;
 		}
-		return true;
+		return super.onKeyDown(keyCode, event);
+
 	}
 	private static final int FROM_SALE = 2;
 	ListView.OnItemClickListener mItemClickListener = new OnItemClickListener() {

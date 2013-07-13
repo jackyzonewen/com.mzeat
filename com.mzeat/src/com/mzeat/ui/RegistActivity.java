@@ -481,6 +481,7 @@ public class RegistActivity extends BaseActivity {
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			finish();
+			return true;
 		}
 
 		return super.onKeyDown(keyCode, event);

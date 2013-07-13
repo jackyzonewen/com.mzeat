@@ -241,16 +241,15 @@ public class PubShareActivity extends BaseActivity {
 		    Entry<Integer, File> entry = iter.next(); 
 		    Object key = entry.getKey(); 
 		    File val = entry.getValue(); 
-		    imgfiles.add( val);
+		    imgfiles.add(val);
 		} 
-		Log.e("files",String.valueOf(files.size()));
+		Log.e("imgfiles",String.valueOf(imgfiles.size()));
 		if (imgfiles.size() == 0) {
 			ShowToast.showMessage(this, "请选择分享照片！");
 		
 			return false;
 
 		}
-		Log.e("files.size()", String.valueOf(files.size()));
 		return true;
 		
 	}
@@ -385,9 +384,10 @@ public class PubShareActivity extends BaseActivity {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 
 			finish();
+			return true;
 		}
-
-		return true;
+		return super.onKeyDown(keyCode, event);
+		
 	}
 	private View.OnClickListener pickClickListener = new View.OnClickListener() {
 		public void onClick(View v) {	

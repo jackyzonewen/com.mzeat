@@ -410,10 +410,12 @@ public class ShareDetailActivity extends BaseActivity {
 				return true;
 			}
 			finish();
+			return true;
 		}
 		
 
-		return true;
+		return super.onKeyDown(keyCode, event);
+
 	}
 
 	@Override

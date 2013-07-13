@@ -556,9 +556,10 @@ public class ShareActivity extends BaseActivity {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 
 			finish();
+			return true;
 		}
-
-		return true;
+		return super.onKeyDown(keyCode, event);
+		
 	}
 
 	ListView.OnItemClickListener mItemClickListener = new OnItemClickListener() {

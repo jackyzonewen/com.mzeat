@@ -22,7 +22,7 @@ public class ShareItem implements Serializable {
 
 	private String 	create_time;
 
-	
+	private String send_from;
 	private String	img ;
 
 	private String small_img;
@@ -113,6 +113,16 @@ public class ShareItem implements Serializable {
 
 	public void setSmall_img(String small_img) {
 		this.small_img = small_img;
+	}
+
+
+	public String getSend_from() {
+		return send_from;
+	}
+
+
+	public void setSend_from(String send_from) {
+		this.send_from = send_from;
 	}
 
 

@@ -783,10 +783,11 @@ public class HappyActivity extends BaseActivity {
 
 			Intent intent = new Intent(HappyActivity.this, MainActivity.class);
 			startActivity(intent);
+			return true;
 		}
 
-		return true;
-		// return super.onKeyDown(keyCode, event);
+		
+		 return super.onKeyDown(keyCode, event);
 	}
 
 	private static final int fromfood =4 ;

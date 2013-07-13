@@ -417,8 +417,9 @@ public class PrivilegeActivity extends BaseActivity {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 
 			finish();
+			return true;
 		}
 
-		return true;
+		return super.onKeyDown(keyCode, event);
 	}
 }

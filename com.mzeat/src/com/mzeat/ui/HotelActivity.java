@@ -783,10 +783,11 @@ public class HotelActivity extends BaseActivity {
 
 			Intent intent = new Intent(HotelActivity.this, MainActivity.class);
 			startActivity(intent);
+			return true;
 		}
 
-		return true;
-		// return super.onKeyDown(keyCode, event);
+		
+		 return super.onKeyDown(keyCode, event);
 	}
 
 	private static final int fromfood = 3;

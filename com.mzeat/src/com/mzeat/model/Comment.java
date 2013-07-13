@@ -14,7 +14,7 @@ public class Comment implements Serializable {
 	private String uid;
 	private String user_name;
 	private String user_avatar;
-	
+	private String send_from;
 	private String content;
 	private String time;
 	
@@ -65,6 +65,12 @@ public class Comment implements Serializable {
 	}
 	public void setParent_id(String parent_id) {
 		this.parent_id = parent_id;
+	}
+	public String getSend_from() {
+		return send_from;
+	}
+	public void setSend_from(String send_from) {
+		this.send_from = send_from;
 	}
 	
 }
